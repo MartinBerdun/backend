@@ -43,7 +43,7 @@ class ProductManager {
 
 const productManager = new ProductManager ();
 productManager.addProducts('fideos', 'pasta italiana', 450, 'ruta de imagen', 'gtrb234', 45);
-productManager.addProducts('zapa', 'zapaitaliana', 40, 'ruta de imagen', 'gtrb234', 46);
+productManager.addProducts('zapa nike', 'zapatillas deportivas', 40, 'ruta de imagen', 'gtrb234', 46);
 
 console.log(productManager.getProductById(2));
 console.log(productManager.getProducts());
