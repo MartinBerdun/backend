@@ -1,49 +1,78 @@
-class ProductManager {
+import fs, { appendFile } from "fs";
+export default class ProductManager {
 
     constructor (){
-        this.products = [];
+        this.path = "./js/files/usuarios.json";
     }
 
-    getProducts = () =>{
-        return this.products;
-    }
-
-    addProducts = (title, description,price, thumbnail, code, stock) =>{
-        const product = {
-            id: this.products.length +1,
-            title,
-            description,
-            price,
-            thumbnail,
-            code,
-            stock,
+    consultProducts = async () =>{
+        if (fs.existsSync(this.path)){
+            const data = await fs.promises.readFile(this.path, "utf-8");
+            const result = JSON.parse(data)
+            return result;
+        } else {
+            return[];
         }
-
-        const codeExist =
-            this.products.find((product) => product.code === code);
-
-        if (codeExist){
-            console.log(`el codido ${code} ya existe`); 
-            return this.products;
-        } 
-        
-        this.products.push(product)
     }
 
-    getProductById = (id) =>{
-        const productId = this.products.find((product) => product.id === id)
+    addProduct = async (product) =>{
+        const products = await this.consultProducts();
+        if(products.length === 0){
+            product.id = 1;
+        } else {
+            product.id = products[products.length -1].id + 1; 
+        }
+        products.push (product);
+        await fs.promises.writeFile(this.path, 
+            JSON.stringify(products, null, "\t"));
+        return product;
+    }
 
-        if (productId) return productId;
-        console.error('not found')
-        return {} ;
+    getProducts = async () =>{
+        const readproducts = await fs.promises.readFile(this.path, "utf-8")
+        const result = JSON.parse(readproducts)
+        return result;
+    }
+
+    getProductById = async (id) =>{
+        const products = await this.getProducts();
+        const prodId = products.find ((product) => product.id === id)
+        if (prodId) return prodId;
+        console.log("Product not find");
+        return [];
+    }
+
+    updateProduct = async (id, changes) => {
+        const products = await this.getProducts();
+        const prodUpdate = products.find ((product) => product.id === id);
+        const productUpdated = {
+            ...prodUpdate,
+            ...changes
+        }
         
+        const newProducts = products.map(product => {
+            if(product.id === id){
+                return productUpdated;
+            } else {
+                return product;
+            }
+        })
+        await fs.promises.writeFile(this.path, 
+            JSON.stringify(products, null, "\t"));
+        return newProducts;
+    }
+
+    deleteProduct = async (id)=>{
+            const products = await this.getProducts();
+            const newProducts=  products.filter ((product) => product.id !== id);
+
+            if (products.length === newProducts.length){
+                console.log("Id not found");
+            }
+
+        await fs.promises.writeFile(this.path, 
+        JSON.stringify(products, null, "\t"));
+        console.log(products);
+        return newProducts;
     }
 }
-
-
-const productManager = new ProductManager ();
-productManager.addProducts('fideos', 'pasta italiana', 450, 'ruta de imagen', 'gtrb234', 45);
-productManager.addProducts('zapa nike', 'zapatillas deportivas', 40, 'ruta de imagen', 'gtrb234', 46);
-
-console.log(productManager.getProductById(2));
-console.log(productManager.getProducts());
