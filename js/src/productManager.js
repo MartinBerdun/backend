@@ -1,4 +1,5 @@
-import fs, { appendFile } from "fs";
+import fs from "fs";
+
 export default class ProductManager {
 
     constructor (){
@@ -76,3 +77,5 @@ export default class ProductManager {
         return newProducts;
     }
 }
+
+// export default ProductManager;
