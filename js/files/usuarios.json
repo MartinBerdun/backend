@@ -1,6 +1,6 @@
 [
 	{
-		"title": "Adidas yeezie",
+		"title": "Vans",
 		"description": "Zapatillas deportivas",
 		"price": 56,
 		"thumbnail": "empty",
@@ -9,7 +9,7 @@
 		"id": 1
 	},
 	{
-		"title": "Nike Airforce 1",
+		"title": "Vans",
 		"description": "Zapatillas deportivas",
 		"price": 56,
 		"thumbnail": "empty",
@@ -18,7 +18,7 @@
 		"id": 2
 	},
 	{
-		"title": "Anteojos de sol Rayban",
+		"title": "Vans",
 		"description": "Zapatillas deportivas",
 		"price": 56,
 		"thumbnail": "empty",
@@ -27,7 +27,7 @@
 		"id": 3
 	},
 	{
-		"title": "Perfume Dior",
+		"title": "Vans",
 		"description": "Zapatillas deportivas",
 		"price": 56,
 		"thumbnail": "empty",
@@ -36,7 +36,7 @@
 		"id": 4
 	},
 	{
-		"title": "Zapatillas New Balance",
+		"title": "Vans",
 		"description": "Zapatillas deportivas",
 		"price": 56,
 		"thumbnail": "empty",
@@ -45,7 +45,7 @@
 		"id": 5
 	},
 	{
-		"title": "Campera Nike",
+		"title": "Vans",
 		"description": "Zapatillas deportivas",
 		"price": 56,
 		"thumbnail": "empty",
@@ -54,57 +54,13 @@
 		"id": 6
 	},
 	{
-		"title": "Camisa Zara",
-		"description": "Zapatillas deportivas",
-		"price": 56,
-		"thumbnail": "empty",
-		"code": 34523,
-		"stock": 23,
+		"title": "gorra",
+		"description": "viscera de verano casual",
+		"price": 23,
+		"status": true,
+		"code": "er5467",
+		"stock": 34,
+		"category": "fashion",
 		"id": 7
-	},
-	{
-		"title": "Remera Lacoste",
-		"description": "Zapatillas deportivas",
-		"price": 56,
-		"thumbnail": "empty",
-		"code": 34523,
-		"stock": 23,
-		"id": 8
-	},
-	{
-		"title": "Gorra LA Lakers",
-		"description": "Zapatillas deportivas",
-		"price": 56,
-		"thumbnail": "empty",
-		"code": 34523,
-		"stock": 23,
-		"id": 9
-	},
-	{
-		"title": "Adidas yeezie",
-		"description": "Zapatillas deportivas",
-		"price": 56,
-		"thumbnail": "empty",
-		"code": 34523,
-		"stock": 23,
-		"id": 10
-	},
-	{
-		"title": "Adidas yeezie",
-		"description": "Zapatillas deportivas",
-		"price": 56,
-		"thumbnail": "empty",
-		"code": 34523,
-		"stock": 23,
-		"id": 11
-	},
-	{
-		"title": "Adidas yeezie",
-		"description": "Zapatillas deportivas",
-		"price": 56,
-		"thumbnail": "empty",
-		"code": 34523,
-		"stock": 23,
-		"id": 12
 	}
 ]

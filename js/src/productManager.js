@@ -1,5 +1,4 @@
 import fs from "fs";
-
 export default class ProductManager {
 
     constructor (){
@@ -45,22 +44,25 @@ export default class ProductManager {
 
     updateProduct = async (id, changes) => {
         const products = await this.getProducts();
-        const prodUpdate = products.find ((product) => product.id === id);
+        const prodUpdate = products.find((product) => product.id === id);
         const productUpdated = {
-            ...prodUpdate,
-            ...changes
+            title: changes.title ?? prodUpdate.title ,
+            description: changes.description ?? prodUpdate.description,
+            price: changes.price ?? prodUpdate.price,
+            thumbnail: changes.thumbnail ?? prodUpdate.thumbnail,
+            code: changes.code ?? prodUpdate.code,
+            stock: changes.stock ?? prodUpdate.stock,
+            id,
         }
-        
-        const newProducts = products.map(product => {
-            if(product.id === id){
-                return productUpdated;
-            } else {
-                return product;
-            }
-        })
+    for(let i = 0 ; i < products.length; i++){
+        if(products[i].id === id){
+            products[i] = productUpdated;
+        }
+    }
         await fs.promises.writeFile(this.path, 
             JSON.stringify(products, null, "\t"));
-        return newProducts;
+
+            return products;
     }
 
     deleteProduct = async (id)=>{
@@ -72,10 +74,8 @@ export default class ProductManager {
             }
 
         await fs.promises.writeFile(this.path, 
-        JSON.stringify(products, null, "\t"));
+        JSON.stringify(newProducts, null, "\t"));
         console.log(products);
         return newProducts;
     }
 }
-
-// export default ProductManager;
