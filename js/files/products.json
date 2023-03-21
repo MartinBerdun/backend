@@ -1,0 +1,22 @@
+[
+	{
+		"title": "goma",
+		"description": "mi auto",
+		"price": 23,
+		"code": "er467",
+		"category": "fashion",
+		"status": true,
+		"stock": 34,
+		"id": "1"
+	},
+	{
+		"title": "caja",
+		"description": "mi auto",
+		"price": 23,
+		"status": true,
+		"code": "er47",
+		"stock": 34,
+		"category": "fashion",
+		"id": 2
+	}
+]
