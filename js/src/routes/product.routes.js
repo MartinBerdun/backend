@@ -1,5 +1,8 @@
 import { Router } from "express";
 import ProductManager from "../productManager.js";
+import { uploader } from "../utils.js";
+
+//para guardar archivos ver clase en el min 1.58
 
 const router = Router();
 const manager = new ProductManager();
