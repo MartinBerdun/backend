@@ -1,19 +1,19 @@
-import {Router}  from "express";
+import { Router } from "express";
+import ProductManager from "../productManager.js";
 
-const router = Router()
+const productManager = new ProductManager();
 
-router.get ("/", (req, res) =>{ //para que se renderize en el servidor
-    res.render("index",  {
-        user: testUser,
-        style: "index.css",
+const router = Router();
+
+router.get("/", async (req, res) => {
+    const products = await productManager.getProducts()
+    res.render("home", {products, style:"style.css"});
+});
+
+router.get("/realtimeproducts", (req, res) => {
+    res.render("realTimeProducts", {
+        style: "style.css"
     });
-    
-    
-    //se renderiza el archivo llamado index y las variables se reemplazan usando el objeto testuser
-})
-
-let testUser = {
-    name: "Martin"
-} 
+});
 
 export default router;

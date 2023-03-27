@@ -1,4 +1,5 @@
 import fs from "fs";
+import socket from "./socket.js";
 export default class ProductManager {
 
     constructor (){
@@ -27,6 +28,7 @@ export default class ProductManager {
         products.push (product);
         await fs.promises.writeFile(this.path, 
             JSON.stringify(products, null, "\t"));
+            socket.io.emit("products", products);// envio datos al servidor
         return product;
     }
 
@@ -80,6 +82,7 @@ export default class ProductManager {
 
         await fs.promises.writeFile(this.path, 
         JSON.stringify(newProducts, null, "\t"));
+        socket.io.emit("products", products);
         return newProducts;
     }
 }

@@ -1,0 +1,33 @@
+    <div id="app">
+    <h2>Products:</h2>
+    {{!-- {{#each products}} --}}
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Code</th>
+                <th>Stock</th>
+            </tr>
+            {{#each products}}
+            <tr>
+                <td>{{this.title}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.price}}</td>
+                <td>{{this.code}}</td>
+                <td>{{this.stock}}</td>
+            </tr>
+            {{/each}}
+        </table>
+        {{!-- <div>
+        <p>{{this.title}}</p>
+        <p>{{this.description}}</p>
+        <p>{{this.price}}</p>
+        <p>{{this.code}}</p>
+        <p>{{this.category}}</p>
+        <p>{{this.stock}}</p>
+        <p>{{this.thumbnails}}</p>
+        </div> --}}
+    </div>
+
+

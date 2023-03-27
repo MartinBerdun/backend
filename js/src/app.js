@@ -4,8 +4,7 @@ import cartRouter from '../src/routes/cart.routes.js';
 import handelbars from "express-handlebars";
 import __dirname from "./utils.js"; //representa la ruta absoluta de los archivos estaticos
 import viewsRouter from "../src/routes/views.routes.js";
-import { Server } from 'socket.io';
-
+import socket from './socket.js';
 
 const app = express();
 
@@ -28,14 +27,9 @@ const httpServer = app.listen(8080, () => {
     console.log("Server runing at port 8080");
 });
 
-const socketServer = new Server( httpServer); //socket del lado del servidor
 
-socketServer.on("connection",(socket) => { //esta esperando que escuche algo
-    console.log("nuevo cliente conectado");
+/////SOCKET.IO
 
-    socket.on("message", (data) =>{ //espera que el cliente emita el mensaje (index.js)
-        console.log(data);
-    })
-}) //la palabra connection es una palabra reservada de socket.io para hacer referencia a cuando un cliente se conecta /// esto es del lado del servidor
-//el message no es palabra reservada pero tiene que ser igual de ambos lados del serv y del cliente
+socket.connect(httpServer);
+
 

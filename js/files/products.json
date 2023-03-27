@@ -1,22 +1,42 @@
 [
 	{
-		"title": "goma",
-		"description": "mi auto",
+		"title": "sillon",
+		"description": "sillon de cuero argentino",
 		"price": 23,
-		"code": "er467",
-		"category": "fashion",
 		"status": true,
+		"code": "323f32",
 		"stock": 34,
-		"id": "1"
+		"category": "fashion",
+		"id": 1
 	},
 	{
-		"title": "caja",
-		"description": "mi auto",
-		"price": 23,
+		"title": "lampara",
+		"description": "lampara de escritorio ideal para estudiar",
+		"price": 345,
 		"status": true,
-		"code": "er47",
-		"stock": 34,
-		"category": "fashion",
-		"id": 2
+		"code": "f32",
+		"stock": 4,
+		"category": "cars",
+		"id": 3
+	},
+	{
+		"title": "campera",
+		"description": "lampara de escritorio ideal para estudiar",
+		"price": 345,
+		"status": true,
+		"code": "2222",
+		"stock": 4,
+		"category": "cars",
+		"id": 4
+	},
+	{
+		"title": "remera",
+		"description": "lampara de escritorio ideal para estudiar",
+		"price": 345,
+		"status": true,
+		"code": "222e442",
+		"stock": 4,
+		"category": "cars",
+		"id": 5
 	}
 ]
