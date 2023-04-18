@@ -1,7 +1,7 @@
-//socket del lado del servidor
+// socket del lado del servidor
 
 import { Server } from "socket.io";
-import ProductManager from "./productManager.js";
+import ProductManager from "./dao/filesManager/productManager.js";
 const socket = {};
 
 socket.connect = (server) => {

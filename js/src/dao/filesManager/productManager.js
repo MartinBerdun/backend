@@ -1,5 +1,5 @@
 import fs from "fs";
-import socket from "./socket.js";
+import socket from "../../socket.js";
 export default class ProductManager {
 
     constructor (){
