@@ -53,14 +53,13 @@ router.get ("/:cid", async (req,res)=>{
 })
 
 //ADD PRODUCT TO CART
-// router.post ("/:cid/product/:pid", async (req,res) => {
-
 
     router.post("/:cid/product/:pid", async (req, res) => {
         const cartId = req.params.cid;
         const productId = req.params.pid;
         const { quantity } = req.body;
         const newProduct = await manager.addProduct(cartId, productId, quantity);
+        console.log(productId);
         if (!newProduct) {
             return res
             .status(404)
@@ -72,6 +71,127 @@ router.get ("/:cid", async (req,res)=>{
             payload: newProduct,
         });
     });
+
+//UPDATE CART
+
+router.put("/:cid", async (req,res) =>{
+    try {
+        const cid = req.params.cid;
+        const pid = req.body;
+        // const {quantity} = req.body;
+        console.log(cid);
+        console.log(pid);
+    
+        if (!cid || !pid)
+        return res.status(400).send({
+        status: "error",
+        message: { error: `Incomplete values` },
+        });
+
+        const updatedCart = await manager.updateCart(cid,pid)
+
+        return res.status(200).send({
+            status:"success",
+            payload:updatedCart,
+        })
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+//UPDATE QUANTITY IN CART
+
+router.put("/:cid/product/:pid", async (req,res) =>{
+    try {
+        const cid = req.params.cid;
+        const pid = req.params.pid;
+        const quantity = req.body;
+        console.log(cid);
+        console.log(pid);
+        console.log(quantity);
+        const quantityUpdated = await manager.updateQuantityInCart(cid,pid,quantity)
+
+        if(!quantityUpdated){
+            return res.status(400).send({
+                status:"error"
+            })
+        }
+
+        return res.status(200).send({
+            status:"success",
+            payload:quantityUpdated,
+        })
+    } catch (error) {
+        console.log(`error al actualizar ${error}`);
+    }
+})
+
+
+//DELETE PRODUCTS FROM CARTS
+
+router.delete("/:cid/product/:pid", async (req,res)=>{
+    try {
+        const cid = req.params.cid;
+        const pid = req.params.pid;
+
+        const deletedProductFromCart = await manager.deleteProductFromCart(cid,pid)
+
+        return res.status(200).send({
+        status: "success",
+        payload: deletedProductFromCart})
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+//delete cart
+
+router.delete("/:cid", async (req,res)=>{
+    try {
+        const {cid} = req.params;
+        const deletedCart = await manager.deleteCart(cid)
+        return res.status(200).send({
+            status: "success",
+            payload: deletedCart,
+        });
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     // const cid = req.params.cid;

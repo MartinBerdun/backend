@@ -25,7 +25,7 @@ router.get ("/", async (req, res)=>{ //siempre que use mongo debe ser una funcio
             page,
             category,
             status,
-            sort
+            sort,
         );
         return res.send({status:"ok", payload: products})
     // let limit = req.query.limit;

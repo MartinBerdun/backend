@@ -1,6 +1,51 @@
-    <div id="app">
+<div>
+    
+    {{#each products}}
+
+    <div class="container">
+        <div class="card">
+            <img src="" alt=""></img> 
+            <h4>{{this.title}}</h4>  
+            <p>${{this.price}}</p> 
+            <button class="botonAgregar"><Link>Details</Link></button>
+        </div>
+    </div>
+    
+    {{/each}}
+</div>
+
+
+<div >
+    {{#if hasPrevPage}}
+        <a href="/?page={{prevPage}}"><button
+        >Previous</button></a>
+    {{/if}}
+
+    <p>{{page}}</p>
+
+    {{#if hasNextPage}}
+        <a href="/?page={{nextPage}}"><button>Next</button></a>
+    {{/if}}
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {{!-- <div id="app">
     <h2>Products:</h2>
-    {{!-- {{#each products}} --}}
         <table>
             <tr>
                 <th>Product</th>
@@ -19,15 +64,4 @@
             </tr>
             {{/each}}
         </table>
-        {{!-- <div>
-        <p>{{this.title}}</p>
-        <p>{{this.description}}</p>
-        <p>{{this.price}}</p>
-        <p>{{this.code}}</p>
-        <p>{{this.category}}</p>
-        <p>{{this.stock}}</p>
-        <p>{{this.thumbnails}}</p>
-        </div> --}}
-    </div>
-
-
+    </div> --}}
