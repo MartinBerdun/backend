@@ -33,6 +33,26 @@ addProduct.addEventListener('submit', async (e) => {
     })
 })
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //recibe un mensaje del servidor
 socket.on("products", (products) => {
     let showProducts = "";

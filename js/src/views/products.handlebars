@@ -1,19 +1,127 @@
 
+    {{#each products}}
+    
+    <div class="container" id="this._id">
+        
+        <div class="card">
+            <form action="" id="addToCart-{{this._id}}"></form>
+            <img src="" alt=""></img> 
+            <h4 id="title">{{this.title}}</h4>  
+            <p>${{this.price}}</p> 
+            <p>{{this.description}}</p>
+            <a href="product/{{this._id}}">
+            <button class= "botonAgregar"
+            >Details</button>
+            </a>
+            <button class="botonAgregar" type="submit">Add to cart 🛒</button>
+            </form>
+        </div>
+    </div>
+    
+    {{/each}}
 
-{{!-- {{#each products}}
+<div >
+    {{#if hasPrevPage}}
+        <a href="/products?page={{prevPage}}"><button
+        >Previous</button></a>
+    {{/if}}
 
-<div class="container">
-    <div class="wrapper">
-    <div class="banner-image"> </div>
-    <h1> {{this.title}} </h1>
-    <p> {{this.description}} </p>
-    </div>
-    <div class="button-wrapper"> 
-    <button class="btn outline">DETAILS</button>
-    <button class="btn fill">BUY NOW</button>
-    </div>
-    </div>
+    <p>{{page}}</p>
+
+    {{#if hasNextPage}}
+        <a href="/products?page={{nextPage}}"><button>Next</button></a>
+    {{/if}}
 </div>
 
+<script
+src="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js
+"
+></script>
 
-{{/each}} --}}
+<script src="js/products.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{!-- <h1>Products from MongoDB using Mongoose + Paginate</h1>
+<h2>Check our products:</h2>
+<div id="productsList">
+    {{#each products}}
+    <div id="{{this._id}}">
+        <div>
+          {{#each this.thumbnails}}
+            <img
+              src="{{this}}" alt="product image"
+            />
+          {{/each}}
+        </div>
+
+        <div>
+            <h5>{{this.title}}</h5>
+            <p>{{this.description}}</p>
+            <form id="addToCartForm-{{this._id}}">
+                <div>
+                    <p>${{this.price}}</p>
+                    <button type="submit">Add to cart 🛒</button>
+                </div>
+
+                <div>
+                    <input placeholder=" " type="text" name="cid" id="cid"  required />
+                    <label for="cid" >Cart ID</label>
+                </div>
+            </form>
+
+                <a href="product/{{this._id}}">
+                <button>Product Details</button>
+                </a>
+        </div>
+    </div>
+    {{/each}}
+</div> --}}
+
+
+
+
+
+
+
+
+
+
+

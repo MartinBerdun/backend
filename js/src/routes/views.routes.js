@@ -4,9 +4,10 @@ import { Router } from "express";
 import ProductManagerDb from "../dao/dbManagers/productsManagerDb.js";
 // import MessagesManager from "../dao/dbManagers/messagesManagerDb.js";
 
-// import ProductManager from "../dao/filesManager/productManager.js";
+import CartManagerDb from "../dao/dbManagers/cartsManagerDB.js";
 
 const productManager = new ProductManagerDb();
+const cartManager = new CartManagerDb();
 // const messageManager = new MessagesManager()
 
 const router = Router();
@@ -19,8 +20,8 @@ router.get("/products", async (req, res) => {
         hasNextPage,
         nextPage,
         prevPage,
-    } = await productManager.getProducts(page, limit, category, status, sort);
-    res.render("home", {
+    } = await productManager.getProducts(limit,page, category, status, sort);
+    res.render("products", {
         products,
         page,
         hasPrevPage,
@@ -32,6 +33,26 @@ router.get("/products", async (req, res) => {
     });
 });
 
+router.get("/product/:pid", async (req, res) => {
+    const  {pid}  = req.params;
+    const product = await productManager.getProductById(pid);
+    res.render("product", {
+        product,
+        style: "product.css",
+        title: "Product Detail",
+    });
+});
+
+router.get("/cart/:cid", async (req, res) => {
+    const { cid } = req.params;
+    const cart = await cartManager.getCartById(cid);
+    res.render("cart", {
+    cart,
+    style: "cart.css",
+    title: "Cart Detail",
+    });
+});
+
 router.get("/realtimeproducts", async (req, res) => {
     const products = await productManager.getProducts()
     res.render("realTimeProducts", {
@@ -39,10 +60,5 @@ router.get("/realtimeproducts", async (req, res) => {
         style: "style.css"
     });
 });
-
-// router.get("/chat", async (req,res)=>{
-//     const messages = await messageManager.getMessages();
-//     return res.render(messages)
-// })
 
 export default router;

@@ -7,7 +7,7 @@ import ProductManagerDb from "../dao/dbManagers/productsManagerDb.js";
 
 const router = Router();
 const manager = new CartManagerDb();
-const prodManager = new ProductManagerDb ();
+// const prodManager = new ProductManagerDb ();
 
 //GET CARTS
 router.get("/", async (req, res) => {
