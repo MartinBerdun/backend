@@ -1,20 +1,20 @@
 
     {{#each products}}
     
-    <div class="container" id="this._id">
+    <div class="container" id="{{this._id}}">
         
         <div class="card">
-            <form action="" id="addToCart-{{this._id}}"></form>
-            <img src="" alt=""></img> 
+            <form id="addToCart-{{this._id}}">
+            {{!-- <img src="" alt=""></img>  --}}
             <h4 id="title">{{this.title}}</h4>  
-            <p>${{this.price}}</p> 
+            <p class="price">${{this.price}}</p> 
             <p>{{this.description}}</p>
+            <button class="botonAgregar" type="submit">Add to cart 🛒</button>
+            </form>
             <a href="product/{{this._id}}">
             <button class= "botonAgregar"
             >Details</button>
             </a>
-            <button class="botonAgregar" type="submit">Add to cart 🛒</button>
-            </form>
         </div>
     </div>
     

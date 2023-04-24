@@ -8,9 +8,7 @@ const manager = new ProductManagerDb();
 
 //GET PRODUCTS
 
-//ACA EN GET ES DONDE TENGO QUE PONER EL PAGINATE
-
-router.get ("/", async (req, res)=>{ //siempre que use mongo debe ser una funcion async porque es un tercer
+router.get ("/", async (req, res)=>{ 
     try {
         const {
             limit = 10,
@@ -20,6 +18,8 @@ router.get ("/", async (req, res)=>{ //siempre que use mongo debe ser una funcio
             sort = null
         } = req.query;
 
+        
+
         const products = await manager.getProducts(
             limit,
             page,
@@ -27,22 +27,30 @@ router.get ("/", async (req, res)=>{ //siempre que use mongo debe ser una funcio
             status,
             sort,
         );
-        return res.send({status:"ok", payload: products})
-    // let limit = req.query.limit;
 
-    // if (!products){
-    //     return res.status(404).send({
-    //     status: "error",
-    //     message: { error: `No products found` },
-    // })}
+        if (isNaN(limit)) {
+            return res.status(400).send({
+                status: "error",
+                error: `Limit ${limit} is not valid`,
+            });
+        }
 
-    // if (!limit || limit > products.length){
-    //     return res.status(200).send({status:"Success", message:{ error: `No limit found`, products}});
-    // } 
+        if (isNaN(page)) {
+            return res.status(400).send({
+                status: "error",
+                error: `Page ${page} is not a valid value`,
+            });
+        }
 
-    
-    // let productsplice = products.splice(0,limit);
-    // return res.status(200).send({status:"Success",products : productsplice})
+        if (!products)
+        return res.status(404).send({
+        status: "error",
+        error: `No products found`,
+        });
+
+
+
+        return res.status(200).send({status:"ok", payload: products})
     } catch (error) {
         console.log(error);
     }
@@ -51,20 +59,13 @@ router.get ("/", async (req, res)=>{ //siempre que use mongo debe ser una funcio
 
 // GET PRODUCT BY ID 
 router.get ("/:pid", async (req,res) => {
-    // try {
-    //     const {pid} = req.params;
-    //     const product = await manager.findById({_id:pid});
-    //     return res.send({status:"success", payload: product})
-    // } catch (error) {
-    //     console.log(error);
-    // }
     try {
         let {pid} = req.params;
         const product = await manager.getProductById(pid)
 
         if(!product) return res.status(404).send({ status: "Error", error: `Product with ID ${pid} was not found` });
 
-        return res.status(200).send({status:"Success",products: product})
+        return res.status(200).send({status:"Success",payload: product})
     } catch (error) {
         console.log(error);
     }
@@ -72,16 +73,6 @@ router.get ("/:pid", async (req,res) => {
 
 //ADD A NEW PRODUCT 
 router.post ("/", async (req,res) =>{
-
-    // try {
-    // const product = req.body;
-    // const productCreated = await manager.create(product);
-    // return res.send({status:"success", payload:productCreated})
-    // } catch (error) {
-    //     console.log(error);
-    // }
-
-    const products = await manager.getProducts();
 
     const product = {
         title: req.body.title,
@@ -94,7 +85,7 @@ router.post ("/", async (req,res) =>{
         thumbnails: req.body.thumbnails,
     };
     
-    // const products = await manager.consultProducts()
+    const products = await manager.consultProducts()
     const productIndex = products.findIndex((prod) => prod.code === product.code);
 
     if (productIndex !== -1) {
@@ -103,7 +94,6 @@ router.post ("/", async (req,res) =>{
         message: { error: `Product with code ${product.code} already exists` },
         });
     }
-
 
     const addProduct = await manager.addProduct(product)
 
@@ -115,15 +105,6 @@ router.post ("/", async (req,res) =>{
 //UPDATE PRODUCT 
 router.put ("/:pid", async (req,res) => {
 
-    // try {
-    //     const {pid} = req.params;
-    //     const productUpdated = req.body;
-    //     const update = await manager.update({_id:pid}, productUpdated)
-    //     return res.send({status:"success", payload: update})
-    // } catch (error) {
-    //     console.log(error);
-    // }
-
     try {
         const {pid} = req.params;
         let productUpdated = req.body;
@@ -132,6 +113,7 @@ router.put ("/:pid", async (req,res) => {
         if(!product)return res.status(404).send({ status: "Error", message: "Product was not updated" });
 
         return res.status(200).send({ status: "Success", message: {success: "Product updated succesfully",pid, productUpdated,product} })
+
     } catch (error) {
     console.log(error);
     }
@@ -139,22 +121,16 @@ router.put ("/:pid", async (req,res) => {
 
 //DELETE PRODUCT 
 router.delete ("/:pid", async (req,res) => {
-    // try {
-    //     const {pid} = req.params;
-    //     const product = await manager.delete({_id : pid})
-    //     return res.send({status:"success", payload: product})
-    // } catch (error) {
-    //     console.log(error);
-    // }
 
     try {
         const {pid} = req.params;
     const deletedProduct = await manager.deleteProduct({_id:pid});
     const products = await manager.getProducts();
 
-    if(!deletedProduct) return res.status(404).send({ status: "Error", message: "Product not deleted" });
+    if(!deletedProduct) return res.status(404).send({ status: "Error", message: `Product with ${pid} not found ` });
 
     return res.status(200).send({ status: "Success", message: {success: "Product deleted succesfully",products}})
+
     } catch (error) {
         console.log(error);
     }

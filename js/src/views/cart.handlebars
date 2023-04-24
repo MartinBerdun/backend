@@ -5,7 +5,7 @@
                 <div class="divCart2">
                     <p>{{this.product.title}}</p>
                     <p>Cantidad: {{this.quantity}}</p>
-                    <p>$ {{this.product.price}} c/u </p>                   <p><b>Total: $ {item.cantidad*item.precioUn}</b></p>
+                    <p>$ {{this.product.price}} c/u </p>                   <p><b>Total: $ {{this.quantity}}*{{this.product.price}}</b></p>
                     <button class="buttonDelete">Eliminar</button>
                 </div>                
         </div>
@@ -15,9 +15,7 @@
 <div>
             <div class="totaldiv"><p className="total" >Total: $ {total()}</p></div>
             <div class="botones">
-            <button class="delete" onClick={deleteList}>Vaciar carrito</button>
-            <button class="create" onClick={createOrder}>Checkout Now</button>
+            <button class="delete">Vaciar carrito</button>
+            <button class="create">Checkout Now</button>
             </div>
             </div>
-
-                        

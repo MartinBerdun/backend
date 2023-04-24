@@ -1,13 +1,21 @@
 
-<div class="divItem">
+<form id="addToCart-{{this._id}}">
+    <div class="divItem">
         <p class="nombre">{{product.title}}</p>
-        <img class="imgDetail" src={{product.img}} alt=""></img>
+        {{!-- <img class="imgDetail" src={{product.img}} alt=""></img> --}}
             <div class="divItem2">
                 <p>{{product.description}}</p>
                 <p><b>${{product.price}}</b></p>
                 <p>Stock: {{product.stock}}</p>
             </div>
-        <button>Agregar</button>    
-            
-</div>
+        <button type="submit">Agregar</button>
+    </div>
+</form>
+
+<script
+src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js
+"
+></script>
+
+<script src="js/product.js"></script>
 

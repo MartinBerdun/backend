@@ -1,17 +1,16 @@
-const addToCart = document.querySelectorAll('[id^="addToCart-"]');
-const productId = document.getElementById("this_.id");
+const addToCartForms = document.querySelectorAll('[id^="addToCart-"]');
 
-
-
-addToCart.forEach((form) => {
+addToCartForms.forEach((form) => {
     form.addEventListener("submit", (e) => {
         e.preventDefault();
 
+        const productId = form.getAttribute("id").split("-")[1];
+
         const quantity = {
-            "quantity":3,
+            "quantity":1,
         }
-    
-        fetch(`/api/carts/64400c635ab188f813fab0f7/product/${productId}`, {
+        
+        fetch(`/api/carts/644562f03f09134e8f2dc238/product/${productId}`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -31,5 +30,6 @@ addToCart.forEach((form) => {
             .catch((error) => console.log(error));
         });
 });
+
 
 

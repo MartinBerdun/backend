@@ -8,7 +8,7 @@ const cartsSchema = mongoose.Schema({
         product: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "products", //hace referencia  a la coleccion de products
-        required: true,
+        // required: true,
         // index: true,
         },
         quantity: {
