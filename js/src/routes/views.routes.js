@@ -1,18 +1,32 @@
 import { Router } from "express";
-// import ProductManager from "../dao/dbManagers/productManager.js";
 
 import ProductManagerDb from "../dao/dbManagers/productsManagerDb.js";
-// import MessagesManager from "../dao/dbManagers/messagesManagerDb.js";
 
 import CartManagerDb from "../dao/dbManagers/cartsManagerDB.js";
+import { checkLogged, checkLogin } from "../middlewares/auth.js";
+
+
 
 const productManager = new ProductManagerDb();
 const cartManager = new CartManagerDb();
-// const messageManager = new MessagesManager()
 
 const router = Router();
 
-router.get("/products", async (req, res) => {
+
+router.get ("/", checkLogged, (req,res) => {
+    res.render("login")
+})
+
+router.get("/register", checkLogged, (req, res) => {
+    res.render("register");
+});
+
+router.get("/profile", checkLogin, (req, res) => {
+    res.render("profile", {
+    user: req.session.user,});
+});
+
+router.get("/products", checkLogin, async (req, res) => {
     const { limit = 10, page = 1, category, status, sort } = req.query;
     const {
         docs: products,
@@ -22,6 +36,7 @@ router.get("/products", async (req, res) => {
         prevPage,
     } = await productManager.getProducts(limit,page, category, status, sort);
     res.render("products", {
+        user : req.session.user,
         products,
         page,
         hasPrevPage,
@@ -52,6 +67,18 @@ router.get("/cart/:cid", async (req, res) => {
     title: "Cart Detail",
     });
 });
+
+// router.get("/register", async (req, res) => {
+//     res.render("register")
+// })
+
+// router.get("/login", (req,res) => {
+//     res.render("login")
+// })
+
+// router.get ("/profile", (req,res) => {
+//     res.render("profile", {user: req.session.user})
+// })
 
 router.get("/realtimeproducts", async (req, res) => {
     const products = await productManager.getProducts()
