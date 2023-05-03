@@ -12,6 +12,8 @@ import database from './db.js';
 import morgan from 'morgan';
 import config from './config.js';
 import sessionsRouter from './routes/sessions.router.js';
+import passport from 'passport';
+import initializePassport from './auth/passport.js';
 
 const app = express();
 
@@ -30,6 +32,10 @@ app.use(
     resave:true,
     saveUninitialized:false,
 }))
+
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 app.use("/api/products", productRouter);

@@ -1,62 +1,71 @@
 import { Router } from "express";
-import userModel from "../dao/models/user.model.js"
+import userModel from "../dao/models/user.model.js";
+import { isValidPassword, createHash } from "../utils.js";
+import passport from "passport";
+
 
 const router = Router();
 
-router.post("/register", async (req, res) => {
-    try {
-        const {first_name, last_name, email, age, password} = req.body;
-
-        const userExists = await userModel.findOne({email});
-        if (userExists){
-            return res
-            .status(400)
-            .send({status:"error", error:"user already exists"})
-        }
-
-        const user = {
-            first_name, last_name, email, age, password
-        };
-        await userModel.create(user);
-        return res.send({status:"success", message :"user registered"})
-
-    } catch (error) {
-        console.log(error);
-    }
+router.post("/register", passport.authenticate("register", {failureRedirect :"/failRegister"})
+,async (req, res) => {
+    return res.send({status:"success", message: "Register Success/ user registered"})
 })
 
-router.post("/login", async (req, res) => {
-    try {
-        const {email, password} = req.body;
+router.get("/failRegister", (req, res) => {
+    res.send({status :"status", error :"Authentication error"})
+})
 
-        if(email === "adminCoder@coder.com" && password === "adminCod3r123") {
-            req.session.user = {
-                name: `adminCoder`,
-                email: email,
-                age: "(not required)",
-                rol: "admin"
-            }
-        } else {
-            const user = await userModel.findOne({email, password});
-            if(!user) {
-                return res
-                    .status(400)
-                    .send({status: "error", error: "Usuario no encontrado."});
-            }
+router.post(
+    "/login",
+    passport.authenticate("login", {failureRedirect:"/failLogin"}) ,
+    async (req, res) => {
+    req.session.user = {
+        first_name : req.user.first_name,
+        last_name : req.user.last_name,
+        email : req.user.email,
+        age : req.user.age,
+        rol : req.user.rol,
+}
 
-            req.session.user = {
-                name: `${user.first_name} ${user.last_name}`,
-                email: user.email,
-                age: user.age,
-                rol: "user",
-            }
-        }
+        return res.send({status:"success", message:"Logged in", payload : req.user})
 
-        return res.send({status:"success", message:"Logged in", payload : req.session.user})
+    // try {
+        // const {email, password} = req.body;
 
-    } catch (error) {
-        console.log(error);
-    }
+        // if(email === "adminCoder@coder.com" && password === "adminCod3r123") {
+        //     req.session.user = {
+        //         name: `adminCoder`,
+        //         email: email,
+        //         age: "(not required)",
+        //         rol: "admin"
+        //     }
+        // } else {
+        //     const user = await userModel.findOne({email}).lean();
+        //     if(!user) {
+        //         return res
+        //             .status(400)
+        //             .send({status: "error", error: "User not found"});
+        //     }
+
+        //     if (!isValidPassword(user,password)) {
+        //         return res.status(401)
+        //         .send({status: "error", error: "unauthorized"});
+        //     }
+
+        //     delete user.password;
+
+        //     req.session.user=user;
+        // }
+
+    //     return res.send({status:"success", message:"Logged in", payload : req.session.user})
+
+    // } catch (error) {
+    //     console.log(error);
+    // }
+})
+
+router.get("/failLogin", (req, res) => {
+    res.send({status :"error", error :"Authentication error"})
 })
 
 router.get("/logout", (req, res) => {
