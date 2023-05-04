@@ -15,8 +15,7 @@ router.get("/failRegister", (req, res) => {
     res.send({status :"status", error :"Authentication error"})
 })
 
-router.post(
-    "/login",
+router.post("/login",
     passport.authenticate("login", {failureRedirect:"/failLogin"}) ,
     async (req, res) => {
     req.session.user = {
@@ -76,5 +75,19 @@ router.get("/logout", (req, res) => {
     });
 
 });
+
+router.get("/github",
+    passport.authenticate("githubLogin", {scope:["user:email"]}),
+    (req, res) => {})
+
+
+router.get("/githubcallback",
+    passport.authenticate("githubLogin", {failureRedirect:"/login"}),
+    async (req, res) => {
+        req.session.user = req.user;
+        res.redirect("/profile");
+    }
+);
+
 
 export default router;
