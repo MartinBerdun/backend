@@ -11,9 +11,12 @@ import MongoStore from 'connect-mongo';
 import database from './db.js';
 import morgan from 'morgan';
 import config from './config.js';
-import sessionsRouter from './routes/sessions.router.js';
+// import sessionsRouter from './routes/sessions.router.js';
 import passport from 'passport';
 import initializePassport from './auth/passport.js';
+
+import UsersRouter from './routes/users.js';
+import SessionsRouter from './routes/sessions.js';
 
 const app = express();
 
@@ -37,10 +40,15 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
+const usersRouter = new UsersRouter();
+app.use("/api/users", usersRouter.getRouter());
+
+const sessionsRouter = new SessionsRouter();
+app.use ("/api/sessions", sessionsRouter.getRouter());
 
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
-app.use("/api/sessions", sessionsRouter);
+// app.use("/api/sessions", sessionsRouter);
 app.use("/", viewsRouter);
 
 //configuracion de handlebars
