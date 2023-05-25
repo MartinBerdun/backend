@@ -4,6 +4,7 @@ import userModel from "../dao/models/user.model.js";
 import { createHash,isValidPassword } from "../utils.js";
 import GitHubStrategy from "passport-github2"
 import config from "../config.js";
+import cartModel  from "../dao/models/carts.model.js";
 
 const {clientID , clientSecret , callbackURL} = config
 
@@ -14,7 +15,7 @@ const initializePassport = () => { //definimos los middlewares, los escenaruios 
         "register",
         new LocalStrategy( {passReqToCallback : true, usernameField: "email"}, async (req,username, password, done) => {
             try {
-                const {first_name, last_name, email, age} = req.body;
+                const {first_name, last_name, email, age, role} = req.body;
 
                 let user = await userModel.findOne({email:username});
                 
@@ -22,23 +23,27 @@ const initializePassport = () => { //definimos los middlewares, los escenaruios 
                     return done(null, false);
                 }
 
+                const cart = await cartModel.create({})
+                console.log(cart);
+
                 const newUser = {
                     first_name,
                     last_name,
                     email,
                     age,
-                    password: createHash(password)
+                    password: createHash(password),
+                    role :role ?? "user",
+                    cart: cart._id,
                 }
 
                 const result = await userModel.create(newUser);
                 return done(null, result);
 
             } catch (error) {
-                return done("Error on trying find user");
+                console.log(error);
+                
             }
         })
-        //passreqToCallback es para utilizar en el callback el objeto req, usernameField el username en el callback sera utilizado como email, porqu passporrt por defecto recibe un usuario y una contraseña, en vez de ser un usuario le estamos diciendo que el username lo tome como un email.
-        // done se utiliza para arrojar la respuesta en passport
         );
 
     passport.use("login", new LocalStrategy({usernameField:"email"}, async (username, password, done) =>{
@@ -89,7 +94,7 @@ const initializePassport = () => { //definimos los middlewares, los escenaruios 
 
     passport.serializeUser((user, done) => {
         done(null, user._id);
-    }); //
+    }); 
 
     passport.deserializeUser(async (id, done) => {
         let user = await userModel.findById(id);

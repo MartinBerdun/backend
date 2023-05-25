@@ -1,9 +1,9 @@
 import express from 'express';
-import productRouter from '../src/routes/product.routes.js';
-import cartRouter from '../src/routes/cart.routes.js';
+import productRouter from './routes/product.router.js';
+import cartRouter from './routes/cart.router.js';
 import handelbars from "express-handlebars";
 import __dirname from "./utils.js"; //representa la ruta absoluta de los archivos estaticos
-import viewsRouter from "../src/routes/views.routes.js";
+import viewsRouter from "./routes/views.router.js";
 import socket from './socket.js';
 import mongoose from 'mongoose';
 import session from 'express-session';
@@ -33,11 +33,12 @@ app.use(
     saveUninitialized:false,
 }))
 
+//Passport
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+//Routes
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/sessions", sessionsRouter);
@@ -54,10 +55,6 @@ const httpServer = app.listen(8080, () => {
 });
 
 database.connect()
-
-// mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@codercluster.gk2ir0t.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`) //aca tiene que ir la contraseña del usuario del cluster de mongodb y no de la cuenta en general!!
-
-/////SOCKET.IO
 
 socket.connect(httpServer);
 

@@ -23,16 +23,13 @@ router.get("/", async (req, res) => {
 //ADD CART
 router.post("/", async (req,res) => {
     try {
-
-        const cart = req.body;
-        if (!cart) {
+        let newCart = await manager.createCart();
+        // const cart = req.body;
+        if (!newCart) {
             return res
             .status(400)
             .send({ status: "Error", error: "Cart could not be added" });
         }
-
-        const newCart = await manager.createCart(cart);
-
         return res.status(200).send({ status: "Success", payload: newCart}) 
         
     } catch (error) {
