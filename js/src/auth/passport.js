@@ -23,8 +23,8 @@ const initializePassport = () => { //definimos los middlewares, los escenaruios 
                     return done(null, false);
                 }
 
-                const cart = await cartModel.create({})
-                console.log(cart);
+                // const cart = await cartModel.create({})
+                // console.log(cart);
 
                 const newUser = {
                     first_name,
@@ -33,7 +33,7 @@ const initializePassport = () => { //definimos los middlewares, los escenaruios 
                     age,
                     password: createHash(password),
                     role :role ?? "user",
-                    cart: cart._id,
+                    // cart: cart._id,
                 }
 
                 const result = await userModel.create(newUser);
