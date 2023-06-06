@@ -33,8 +33,6 @@ export const getProducts = async (req,res) => {
             });
         }
 
-        console.log({products});
-
         if (!products)
         return res.status(404).send({
         status: "error",
@@ -68,14 +66,14 @@ export const addProduct = async (req, res) => {
         
         const products = await productService.consultProducts()
         console.log({products});
-        // const productIndex = products.findIndex((prod) => prod.code === product.code);
+        const productIndex = products.findIndex((prod) => prod.code === product.code);
     
-        // if (productIndex !== -1) {
-        //     return res.status(400).send({
-        //     status: "error",
-        //     message: { error: `Product with code ${product.code} already exists` },
-        //     });
-        // }
+        if (productIndex !== -1) {
+            return res.status(400).send({
+            status: "error",
+            message: { error: `Product with code ${product.code} already exists` },
+            });
+        }
     
         const addProduct = await productService.addProduct(product)
     
