@@ -1,91 +1,144 @@
 import { Router } from "express";
-
-import ProductManagerDb from "../dao/dbManagers/productsManagerDb.js";
-
-import CartManagerDb from "../dao/dbManagers/cartsManagerDB.js";
-import { checkLogged, checkLogin } from "../middlewares/auth.js";
-
-
-
-const productManager = new ProductManagerDb();
-const cartManager = new CartManagerDb();
-
 const router = Router();
 
+import { checkLogged, checkLogin } from "../middlewares/auth.js";
 
-router.get ("/", checkLogged, (req,res) => {
-    res.render("login")
-})
+import { loginView, RegisterView, profileView, homeView, productView, cartView, ticketView, } from "../controllers/views.controller.js";
 
-router.get("/register", checkLogged, (req, res) => {
-    res.render("register");
-});
+router.get("/", checkLogged, loginView);
 
-router.get("/profile", checkLogin, (req, res) => {
-    res.render("profile", {
-    user: req.session.user,});
-});
+router.get("/register", checkLogged  ,RegisterView);
 
-router.get("/products", checkLogin, async (req, res) => {
-    const { limit = 10, page = 1, category, status, sort } = req.query;
-    const {
-        docs: products,
-        hasPrevPage,
-        hasNextPage,
-        nextPage,
-        prevPage,
-    } = await productManager.getProducts(limit,page, category, status, sort);
-    res.render("products", {
-        user : req.session.user,
-        products,
-        page,
-        hasPrevPage,
-        hasNextPage,
-        prevPage,
-        nextPage,
-        style: "style.css",
-        title: "Products",
-    });
-});
+router.get("/profile", checkLogged ,profileView);
 
-router.get("/product/:pid", async (req, res) => {
-    const  {pid}  = req.params;
-    const product = await productManager.getProductById(pid);
-    res.render("product", {
-        product,
-        style: "product.css",
-        title: "Product Detail",
-    });
-});
+router.get("/products", checkLogin ,homeView);
 
-router.get("/cart/:cid", async (req, res) => {
-    const { cid } = req.params;
-    const cart = await cartManager.getCartById(cid);
-    res.render("cart", {
-    cart,
-    style: "cart.css",
-    title: "Cart Detail",
-    });
-});
+router.get("/product/:pid", productView);
 
-// router.get("/register", async (req, res) => {
-//     res.render("register")
-// })
+router.get("/cart/:cid", cartView);
 
-// router.get("/login", (req,res) => {
+router.get("/tickets", ticketView);
+
+
+
+
+
+export default router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import ProductManagerDb from "../dao/dbManagers/productsManagerDb.js";
+
+// import CartManagerDb from "../dao/dbManagers/cartsManagerDB.js";
+// import { checkLogged, checkLogin } from "../middlewares/auth.js";
+
+
+
+// const productManager = new ProductManagerDb();
+// const cartManager = new CartManagerDb();
+
+
+
+
+// router.get ("/", checkLogged, (req,res) => {
 //     res.render("login")
 // })
 
-// router.get ("/profile", (req,res) => {
-//     res.render("profile", {user: req.session.user})
-// })
+// router.get("/register", checkLogged, (req, res) => {
+//     res.render("register");
+// });
 
-router.get("/realtimeproducts", async (req, res) => {
-    const products = await productManager.getProducts()
-    res.render("realTimeProducts", {
-        products,
-        style: "style.css"
-    });
-});
+// router.get("/profile", checkLogin, (req, res) => {
+//     res.render("profile", {
+//     user: req.session.user,});
+// });
 
-export default router;
+// router.get("/products", checkLogin, async (req, res) => {
+//     const { limit = 10, page = 1, category, status, sort } = req.query;
+//     const {
+//         docs: products,
+//         hasPrevPage,
+//         hasNextPage,
+//         nextPage,
+//         prevPage,
+//     } = await productManager.getProducts(limit,page, category, status, sort);
+//     res.render("products", {
+//         user : req.session.user,
+//         products,
+//         page,
+//         hasPrevPage,
+//         hasNextPage,
+//         prevPage,
+//         nextPage,
+//         style: "style.css",
+//         title: "Products",
+//     });
+// });
+
+// router.get("/product/:pid", async (req, res) => {
+//     const  {pid}  = req.params;
+//     const product = await productManager.getProductById(pid);
+//     res.render("product", {
+//         product,
+//         style: "product.css",
+//         title: "Product Detail",
+//     });
+// });
+
+// router.get("/cart/:cid", async (req, res) => {
+//     const { cid } = req.params;
+//     const cart = await cartManager.getCartById(cid);
+//     res.render("cart", {
+//     cart,
+//     style: "cart.css",
+//     title: "Cart Detail",
+//     });
+// });
+
+// // router.get("/register", async (req, res) => {
+// //     res.render("register")
+// // })
+
+// // router.get("/login", (req,res) => {
+// //     res.render("login")
+// // })
+
+// // router.get ("/profile", (req,res) => {
+// //     res.render("profile", {user: req.session.user})
+// // })
+
+// router.get("/realtimeproducts", async (req, res) => {
+//     const products = await productManager.getProducts()
+//     res.render("realTimeProducts", {
+//         products,
+//         style: "style.css"
+//     });
+// });
+
+

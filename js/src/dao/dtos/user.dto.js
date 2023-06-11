@@ -1,6 +1,6 @@
-export class GetuserDTO {
+export class UserDTO {
     constructor(user) {
-        this.name = user.name;
+        this.name = user.first_name;
         this.email = user.email;
         this.age = user.age;
         this.role= user.role;

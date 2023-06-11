@@ -14,6 +14,7 @@ import config from './config.js';
 import sessionsRouter from './routes/sessions.router.js';
 import passport from 'passport';
 import initializePassport from './auth/passport.js';
+import ticketsRouter from './routes/ticket.router.js';
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use(passport.session());
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/sessions", sessionsRouter);
+app.use("/api/ticket", ticketsRouter);
 app.use("/", viewsRouter);
 
 //configuracion de handlebars
