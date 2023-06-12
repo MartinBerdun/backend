@@ -1,6 +1,7 @@
 import CustomRouter from "./class.router.js";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
 
+import jwt from "jsonwebtoken";
 
 export default class SessionsRouter extends CustomRouter {
 init () {
