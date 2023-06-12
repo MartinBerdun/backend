@@ -26,7 +26,7 @@ app.use(
     session({
         store: MongoStore.create({
             mongoUrl: config.dbUrl,
-            ttl: 15,
+            ttl: 120,
         }),
 
     secret:"config.SESSION_SECRET",
@@ -43,7 +43,7 @@ app.use(passport.session());
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/sessions", sessionsRouter);
-app.use("/api/ticket", ticketsRouter);
+app.use("/api/tickets", ticketsRouter);
 app.use("/", viewsRouter);
 
 //configuracion de handlebars

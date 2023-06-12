@@ -1,6 +1,3 @@
-import { Router } from "express";
-
-
 import { userService } from "../servicies/users.services.js";
 import { productService } from "../servicies/products.services.js";
 import { cartService } from "../servicies/carts.services.js";
@@ -19,7 +16,7 @@ export const RegisterView = (req, res) => {
 
 export const profileView = (req, res) => {
     res.render("profile", {
-    user: req.session.user,
+    user: req.user,
     });
 };
 
@@ -88,25 +85,37 @@ export const cartView = async (req, res) => {
 
 export const ticketView = async (req, res) => {
     try {
-        const  email = req.session.user;
-        console.log(email);
-        const userTickets = await ticketService.getTicketsByEmail(email);
-        userTickets.forEach((ticket) => {
-        const date = new Date(ticket.purchase_datetime).toLocaleString();
-        ticket.purchase_datetime = date;
-    });
-        res.render("ticket", {
-        user: req.user,
-        userTickets,
-        style: "styles.css",
-    });
+        const tickets = await ticketService.getTickets();
+        res.render('ticket', {
+            tickets,
+            style: "ticket.css",
+            title: "Tickets",
+        })
 
-    if (!userTickets) {
-        return res.status(404).render("error", {
-        message: "Error 404: Tickets not found",
-        // style: "styles.css",
-    });
-    }
+    //     const  email = req.user;
+    //     console.log(email);
+    //     // const emailUser = await userService.getUsersByEmail(email);
+    //     const userTickets = await ticketService.getTicketsByEmail(email);
+    //     userTickets.forEach((ticket) => {
+    //     const date = new Date(ticket.purchase_datetime).toLocaleString();
+    //     ticket.purchase_datetime = date;
+    // });
+    //     res.render("ticket", {
+    //     user: req.session.user,
+    //     userTickets,
+    //     style: "styles.css",
+    // });
+    // res.render("ticket", {
+    //     //     user: req.session.user,
+    //         tickets,
+    //     //     style: "styles.css",
+
+    // if (!userTickets) {
+    //     return res.status(404).render("error", {
+    //     message: "Error 404: Tickets not found",
+    //     // style: "styles.css",
+    // });
+    // }
     } catch (error) {
         console.log(`Failed to render ticket view: ${error}`);
     res

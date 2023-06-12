@@ -1,28 +1,10 @@
-<div id="app">
+{{!-- <div id="app">
   <nav >
     <ul>
       <li>
         <a href="/products">
           <button
           >Home 🏚️</button>
-        </a>
-      </li>
-      <li>
-        <a href="/chat">
-          <button
-          >Chat 💬</button>
-        </a>
-      </li>
-      <li>
-        <a href="/profile">
-          <button
-          >Profile 👨‍💻</button>
-        </a>
-      </li>
-      <li>
-        <a href="/carts">
-          <button
-          >My Cart 🛒</button>
         </a>
       </li>
       <li>
@@ -35,9 +17,9 @@
   </nav>
   <h1>Your
     Orders</h1>
-  {{#if userTickets}}
+  {{#if tickets}}
     <div id="ticketsDetail">
-      {{#each userTickets}}
+      {{#each tickets}}
         <div id="{{this._id}}">
           <div>
             <div>
@@ -45,15 +27,15 @@
               <p>Purchase date:
                 {{this.purchase_datetime}}</p>
               {{! ciclo 2 }}
-                {{#each this.products}}
+                {{!-- {{#each this.products}}
                     <p>{{this.quantity}}
                     x
                     {{this.productId.title}}
                     - $
                     {{this.productId.price}}
                     ea.</p>
-                {{/each}}
-            </div>
+                {{/each}} --}}
+            {{!-- </div>
           </div>
         </div>
       {{/each}}
@@ -67,9 +49,38 @@
 </div>
 <div>
 <h3>Views</h3>
-</div>
+</div> --}}
 
-<script
+{{!-- <script
   src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js
 "
-></script>
+></script> --}}
+
+{{#if tickets  }}
+<div class="ticket">
+        <table>
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Date & Time</th>
+                    <th>Purchase</th>
+                    <th>Amount</th>
+
+                </tr>
+            </thead>
+            {{#each tickets}}
+            <tbody>
+                <tr>
+                    <td>{{this.code}}</td>
+                    <td>{{this.purchase_datetime}}</td>
+                    <td>{{this.purchaser}}</td>
+                    <td>$ {{this.ammount}}</td>
+
+                </tr>
+            </tbody>
+            {{/each}}
+        </table>
+    </div>
+
+{{/if }}
+

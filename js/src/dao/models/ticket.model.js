@@ -10,7 +10,7 @@ const ticketSchema = new mongoose.Schema({
     purchase_datetime: {
         type: String
     },
-    amount: {
+    ammount: {
         type: Number,
     },
     purchaser: {

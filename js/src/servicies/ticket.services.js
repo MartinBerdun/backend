@@ -52,6 +52,8 @@ async getTicketsByEmail(email) {
     
 async createTicket(cid) {
         try {
+            const user = await userRepository.getUserByCartId(cid);
+            if(!user) throw new Error (`User with cart ID ${cid} does not exist`);
             const cart = await cartsRepository.getCartById(cid);
             if (!cart) throw new Error(`Cart with id: ${cid} does not exist`);
     
@@ -70,7 +72,7 @@ async createTicket(cid) {
                 products.push({
                     product: pid,
                     quantity: qty,
-                  total: price * qty,
+                  ammount: price * qty,
                 });
     
                 const deletedProductFromCart =
@@ -86,8 +88,8 @@ async createTicket(cid) {
         );
     
             if (products.length === 0)
-            throw new Error("All products were out of stock.");
-            console.log(products);
+            throw new Error("Products out of stock.");
+            console.log({products});
     
             const code = uuidv4();
 
@@ -96,12 +98,13 @@ async createTicket(cid) {
             const { email: purchaser } = await userRepository.getUserByCartId(cid);
     
             const ticket = {
-            products,
             code,
             purchase_datetime,
             ammount,
             purchaser,
             };
+
+            console.log({ammount});
     
             const newTicket = await ticketRepository.createTicket(ticket);
 
