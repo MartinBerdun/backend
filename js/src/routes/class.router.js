@@ -1,6 +1,6 @@
 import { Router } from "express";
-import jwt  from "jsonwebtoken";
-
+// import jwt  from "jsonwebtoken";
+import jwt from "jsonwebtoken"
 
 export default class CustomRouter {
     constructor() {
@@ -22,12 +22,12 @@ export default class CustomRouter {
             this.applyCallbacks(callback))
     }
 
-    post(path, policies, ...callbacks) {
+    post(path, policies, ...callback) {
         this.router.post(
         path,
         this.handlePolicies(policies),
         this.generateCustomResponses,
-        this.applyCallbacks(callbacks)
+        this.applyCallbacks(callback)
         );
     }
 
@@ -50,14 +50,15 @@ export default class CustomRouter {
         let user = jwt.verify(token,"CoderSecret")
 
         if(!policies.includes(user.role))
+            return res.status(403).send({status:"error"});
+
         console.log(user.role);
-        return res.status(403).send({status:"error"});
 
         req.user = user;
         next();
     }
 
-    applyCallbacks(callbacks) {
+    applyCallbacks(callbacks) { // nos permite pasar los callbasck como parmetros en otra funcion 
         return callbacks.map((callback) => async (...params)=> {
             try {
                 await callback.apply(this,params);
