@@ -11,6 +11,7 @@ const config = {
     clientID : process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     callbackUrl : process.env.CALLBACK_URL,
+    JWT_SECRET: process.env.JWT_SECRET,
 
 }
 
