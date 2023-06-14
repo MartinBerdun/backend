@@ -2,9 +2,6 @@ import { Router } from "express";
 const router = Router();
 import passport from "passport";
 
-
-// import { checkLogged } from "../middlewares/auth.js";
-
 import { loginView, RegisterView, profileView, homeView, productView, cartView, ticketView, } from "../controllers/views.controller.js";
 
 router.get("/",  loginView);

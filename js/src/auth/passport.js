@@ -9,7 +9,7 @@ import jwt from "passport-jwt";
 import cookieParser from "cookie-parser";
 import { userRepository } from "../dao/repositories/users.repository.js";
 
-const {clientID , clientSecret , callbackURL, JWT_SECRET} = config
+const {clientID , clientSecret , callbackURL, JWT_SECRET, ADMIN_EMAIL} = config
 
 const LocalStrategy = local.Strategy;
 const JWTStrategy = jwt.Strategy;
@@ -33,11 +33,13 @@ const initializePassport = () => {
         "register",
         new LocalStrategy( {passReqToCallback : true, usernameField: "email"}, async (req,username, password, done) => {
             try {
-                const {first_name, last_name, age} = req.body;
-                // let {role} = req.body;
+                const {first_name, last_name,email, age} = req.body;
+                let {role} = req.body;
 
-                // let user = await userModel.findOne({email:username});
-                let user = await userRepository.getUserByEmail({email:username});
+                let user = await userModel.findOne({email:username});
+                // let user = await userRepository.getUserByEmail({email:username});ç
+            
+                console.log({user});
                 
                 if (user) {
                     console.log("user already exists");
@@ -50,18 +52,24 @@ const initializePassport = () => {
                 const newUser = {
                     first_name,
                     last_name,
-                    email: username,
+                    email,
                     age,
                     password: createHash(password),
-                    // role :
-                    // username === `${ADMIN_EMAIL}`
-                    //     ? (role = "admin")
-                    //     : (role = "user"),
+                    role :
+                    username === `${ADMIN_EMAIL}`
+                        ? (role = "admin")
+                        : (role = "user"),
 
                     // cart: cart._id,
                 }
 
+                
                 const result = await userModel.create(newUser);
+
+                console.log({result});
+
+                if(!result) console.log("user not created");
+
                 return done(null, result);
 
             } catch (error) {

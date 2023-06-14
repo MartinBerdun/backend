@@ -36,6 +36,8 @@ router.post("/login",
         const userDTO = new UserDTO(user);
         const jwtUser = JSON.parse(JSON.stringify(userDTO));
 
+        console.log(jwtUser);
+
         const token = jwt.sign(jwtUser,JWT_SECRET, {expiresIn: "24h"})
 
 
@@ -45,7 +47,7 @@ router.post("/login",
 })
 
 router.get("/current", (req, res) => {
-    return res.send({payload: req.session.user})
+    return res.send({payload: req.user})
 })
 
 router.get("/failLogin", (req, res) => {

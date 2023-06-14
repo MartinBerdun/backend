@@ -6,12 +6,12 @@ import __dirname from "./utils.js"; //representa la ruta absoluta de los archivo
 import viewsRouter from "./routes/views.router.js";
 import socket from './socket.js';
 import cookieParser from 'cookie-parser';
-import mongoose from 'mongoose';
-import session from 'express-session';
-import MongoStore from 'connect-mongo';
+// import mongoose from 'mongoose';
+// import session from 'express-session';
+// import MongoStore from 'connect-mongo';
 import database from './db.js';
 import morgan from 'morgan';
-import config from './config.js';
+// import config from './config.js';
 import sessionsRouter from './routes/sessions.router.js';
 import passport from 'passport';
 import initializePassport from './auth/passport.js';

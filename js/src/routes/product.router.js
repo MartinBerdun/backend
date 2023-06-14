@@ -12,3 +12,4 @@ router.put ("/:pid", updateProduct);
 router.delete ("/:pid",deleteProduct);
 
 export default router;
+
