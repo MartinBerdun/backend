@@ -1,15 +1,20 @@
 
-const checkLogin = (req, res, next) => {
-    if (!req.session.user) return res.redirect("/");
-    next();
-}
+// const checkLogin = (req, res, next) => {
+//     if (!req.session.user) return res.redirect("/");
+//     next();
+// }
 
-const checkLogged = (req, res, next) => {
-    if (req.session.user) return res.redirect("/products");
-    console.log(req.session.user);
-    next();
+// const checkLogged = (req, res, next) => {
+//     if (req.session.user) return res.redirect("/products");
+//     console.log(req.session.user);
+//     next();
 
-}
+// }
+
+import jwt from "jsonwebtoken";
+import config from "../config.js";
+
+const {JWT_SECRET} = config;
 
 const authRole = (req, res, next, roleToVerify) => {
     // const  role  = "user";
@@ -22,4 +27,4 @@ const authRole = (req, res, next, roleToVerify) => {
 
     next();
 };
-export { checkLogged, checkLogin , authRole};
+export {   authRole};

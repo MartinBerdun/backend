@@ -31,7 +31,7 @@ export const homeView = async (req, res) => {
         prevPage,
     } = await productService.getProducts(limit,page, category, status, sort);
     res.render("products", {
-        user : req.session.user,
+        user : req.user,
         products,
         page,
         hasPrevPage,

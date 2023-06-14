@@ -1,23 +1,26 @@
 import { Router } from "express";
 const router = Router();
+import passport from "passport";
 
-import { checkLogged, checkLogin } from "../middlewares/auth.js";
+
+// import { checkLogged } from "../middlewares/auth.js";
 
 import { loginView, RegisterView, profileView, homeView, productView, cartView, ticketView, } from "../controllers/views.controller.js";
 
-router.get("/", checkLogged, loginView);
+router.get("/",  loginView);
 
-router.get("/register", checkLogged  ,RegisterView);
+router.get("/register",RegisterView);
 
-router.get("/profile", checkLogged ,profileView);
+router.get("/profile",passport.authenticate("jwt", { session: false }) ,profileView);
 
-router.get("/products", checkLogin ,homeView);
+router.get("/products",passport.authenticate("jwt", { session: false }) ,homeView);
 
 router.get("/product/:pid", productView);
 
 router.get("/cart/:cid", cartView);
 
 router.get("/tickets", ticketView);
+
 
 
 
