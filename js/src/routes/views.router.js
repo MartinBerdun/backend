@@ -5,13 +5,13 @@ import { checkLogged, checkLogin } from "../middlewares/auth.js";
 
 import { loginView, RegisterView, profileView, homeView, productView, cartView, ticketView, } from "../controllers/views.controller.js";
 
-router.get("/", checkLogged, loginView);
+router.get("/", loginView);
 
-router.get("/register", checkLogged  ,RegisterView);
+router.get("/register" ,RegisterView);
 
-router.get("/profile", checkLogged ,profileView);
+router.get("/profile",profileView);
 
-router.get("/products", checkLogin ,homeView);
+router.get("/products" ,homeView);
 
 router.get("/product/:pid", productView);
 
