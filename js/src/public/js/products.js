@@ -11,7 +11,7 @@ addToCartForms.forEach((form) => {
             "quantity":1,
         }
         
-        fetch(`/api/carts/644562f03f09134e8f2dc238/product/${productId}`, {
+        fetch(`/api/carts/6474ac0822d9155eb5096c9e/product/${productId}`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',

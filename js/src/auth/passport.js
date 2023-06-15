@@ -5,7 +5,7 @@ import { createHash,isValidPassword } from "../utils.js";
 import GitHubStrategy from "passport-github2"
 import config from "../config.js";
 import cartModel  from "../dao/models/carts.model.js";
-import jwt from "passport-jwt";
+import jwt from "passport-jwt"
 import cookieParser from "cookie-parser";
 import { userRepository } from "../dao/repositories/users.repository.js";
 
