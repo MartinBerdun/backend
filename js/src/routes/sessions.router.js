@@ -13,7 +13,7 @@ const router = Router();
 
 const {JWT_SECRET} = config;
 
-router.post("/register", passport.authenticate("register", {failureRedirect :"/api/sessions/failRegister"})
+router.post("/register", passport.authenticate("register", {failureRedirect :"/api/sessions/failRegister", session:false})
 ,async (req, res) => {
     return res.send({status:"success", message: "Register Success/ user registered"})
 })

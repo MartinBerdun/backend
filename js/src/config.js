@@ -15,6 +15,11 @@ const config = {
     ADMIN_CODER : process.env.ADMIN_CODER,
     ADMIN_PASSWORD : process.env.ADMIN_PASSWORD,
 
+    EMAIL_SERVICE : process.env.EMAIL_SERVICE,
+    EMAIL_PORT : process.env.EMAIL_PORT,
+    EMAIL_USER: process.env.EMAIL_USER,
+    EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
+
 }
 
 export default config;

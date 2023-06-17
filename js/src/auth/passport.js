@@ -56,7 +56,7 @@ const initializePassport = () => {
                     age,
                     password: createHash(password),
                     role :
-                    username === `${ADMIN_EMAIL}`
+                    username === "adminCoder@coder.com"
                         ? (role = "admin")
                         : (role = "user"),
 

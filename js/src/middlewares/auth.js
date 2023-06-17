@@ -1,4 +1,4 @@
-
+/* 
 const checkLogin = (req, res, next) => {
     if (!req.session.user) return res.redirect("/");
     next();
@@ -10,6 +10,7 @@ const checkLogged = (req, res, next) => {
     next();
 
 }
+ */
 
 import jwt from "jsonwebtoken";
 import config from "../config.js";
@@ -36,4 +37,4 @@ const authRole = (req, res, next, roleToVerify) => {
   
     next();
   };
-export {  authRole};
+export { authRole};
