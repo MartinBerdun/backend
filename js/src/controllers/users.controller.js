@@ -13,38 +13,40 @@ export const getUsers = async (req,res) => {
     }
 }
 
-export const login = async (req,res) =>{
-    try {
-        const {email, password} = req.body;
+//esto para mi no va
 
-        req.session.user = {
-            name: `${result.first_name} ${result.last_name}`,
-            email: result.email,
-            age: result.age,
-            rol: result.role,
-            cart: result.cart
-        };
+// export const login = async (req,res) =>{
+//     try {
+//         const {email, password} = req.body;
 
-        const userLogged = await userService.login(email, password); 
+//         req.session.user = {
+//             name: `${result.first_name} ${result.last_name}`,
+//             email: result.email,
+//             age: result.age,
+//             rol: result.role,
+//             cart: result.cart
+//         };
 
-        if (!email || !password) {
-            return res.status(400).send({
-                status: "error",
-                error: "Incomplete values",
-            });
-        }
+//         const userLogged = await userService.login(email, password); 
 
-        if(!userLogged) {
-            return res.status(401).send({status: "error", error: "user not logged in"});
-        }
+//         if (!email || !password) {
+//             return res.status(400).send({
+//                 status: "error",
+//                 error: "Incomplete values",
+//             });
+//         }
 
-        return res.status(200).send({status: "success", payload : userLogged })
+//         if(!userLogged) {
+//             return res.status(401).send({status: "error", error: "user not logged in"});
+//         }
 
-    } catch (error) {
-        throw new Error(error);
-    }
+//         return res.status(200).send({status: "success", payload : userLogged })
 
-}
+//     } catch (error) {
+//         throw new Error(error);
+//     }
+
+// }
 
 export const registerUser = async (req, res) => {
     try {

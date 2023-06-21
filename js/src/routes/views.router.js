@@ -1,23 +1,24 @@
 import { Router } from "express";
 const router = Router();
-
-import { checkLogged, checkLogin } from "../middlewares/auth.js";
+import passport from "passport";
+import { authRole } from "../middlewares/auth.js";
 
 import { loginView, RegisterView, profileView, homeView, productView, cartView, ticketView, } from "../controllers/views.controller.js";
 
-router.get("/", loginView);
+router.get("/",  loginView);
 
-router.get("/register" ,RegisterView);
+router.get("/register",RegisterView);
 
-router.get("/profile",profileView);
+router.get("/profile",passport.authenticate("jwt", { session: false }) ,profileView);
 
-router.get("/products" ,homeView);
+router.get("/products",passport.authenticate("jwt", { session: false }) ,homeView);
 
 router.get("/product/:pid", productView);
 
-router.get("/cart/:cid", cartView);
+router.get("/cart/:cid",(req, res, next) => authRole(req, res, next, "user"), cartView);
 
-router.get("/tickets", ticketView);
+router.get("/tickets",(req, res, next) => authRole(req, res, next, "user"), ticketView);
+
 
 
 

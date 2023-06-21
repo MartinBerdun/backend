@@ -7,6 +7,13 @@ import { userRepository } from "../dao/repositories/users.repository.js";
 
 import { v4 as uuidv4 } from "uuid";
 
+import { transport } from "../transport.js";
+
+import config from "../config.js";
+
+const { EMAIL_USER } = config;
+
+
 
 class TicketService {
     constructor(){
@@ -117,6 +124,29 @@ async createTicket(cid) {
             throw error;
         }
     }
+
+    async sendEmail(mail){
+        try {
+            const sentEmail = await transport.sendMail({
+                from: `${EMAIL_USER}`,
+                to: mail.email,
+                subject: "Testin Nodemailer",
+                text: "Testin email sent",
+                attachments: [],
+            });
+        
+            if (!sentEmail) throw new Error(`Email send failure`);
+        
+            return sentEmail;
+        } catch (error) {
+            throw new Error (error);
+        }
+    }
+
+
+
 }
+
+
 
 export const ticketService = new TicketService();

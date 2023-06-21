@@ -34,7 +34,7 @@ class UserService {
 
     async getUsersByEmail (email) {
         try {
-            const users = await userRepository.getUsersByEmail({email});
+            const users = await userRepository.getUsersByEmail(email);
             if (!users) return console.log("No users found by email at service/ Already exist");
         } catch (error) {
             throw new Error(error);

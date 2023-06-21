@@ -2,11 +2,18 @@ import { Router } from "express";
 // import userModel from "../dao/models/user.model.js";
 // import { isValidPassword, createHash } from "../utils.js";
 import passport from "passport";
-
+import { userService } from "../servicies/users.services.js";
+import { isValidPassword } from "../utils.js";
+import jwt from "jsonwebtoken"
+import { UserDTO } from "../dao/dtos/user.dto.js";
+import config from "../config.js";
+import { userRepository } from "../dao/repositories/users.repository.js";
 
 const router = Router();
 
-router.post("/register", passport.authenticate("register", {failureRedirect :"/api/sessions/failRegister"})
+const {JWT_SECRET} = config;
+
+router.post("/register", passport.authenticate("register", {failureRedirect :"/api/sessions/failRegister", session:false})
 ,async (req, res) => {
     return res.send({status:"success", message: "Register Success/ user registered"})
 })
@@ -16,22 +23,31 @@ router.get("/failRegister", (req, res) => {
 })
 
 router.post("/login",
-    passport.authenticate("login", {failureRedirect:"/failLogin"}) ,
+    // passport.authenticate("login", {failureRedirect:"/failLogin"}) ,
     async (req, res) => {
-    req.session.user = {
-        first_name : req.user.first_name,
-        last_name : req.user.last_name,
-        email : req.user.email,
-        age : req.user.age,
-        role : req.user.role,
-        cart : req.user.cart
-}
+        const {email,password}=req.body; //va en controllers
+        
+        const user = await userRepository.getUserByEmail({email: email});
 
-        return res.send({status:"success", message:"Logged in", payload : req.user})
+        if(!user) return res.status(401).send({status: "error", error :"User does not exist"});
+
+        if(!isValidPassword(user, password)) return res.status(401).send({status: "error", error :"Invalid credentials"});
+        
+        const userDTO = new UserDTO(user);
+        const jwtUser = JSON.parse(JSON.stringify(userDTO));
+
+        console.log(jwtUser);
+
+        const token = jwt.sign(jwtUser,JWT_SECRET, {expiresIn: "24h"})
+
+
+        return res
+        .cookie("jwtCookie", token, {httpOnly: true}) //aca creo el token en la cookie
+        .send({status:"success", message:"Logged in"})
 })
 
 router.get("/current", (req, res) => {
-    return res.send({payload: req.session.user})
+    return res.send({payload: req.user})
 })
 
 router.get("/failLogin", (req, res) => {
@@ -39,12 +55,8 @@ router.get("/failLogin", (req, res) => {
 })
 
 router.get("/logout", (req, res) => {
-    req.session.destroy((error) => {
-        if (!error) return res.send("Logout successful!");
-
-        return res.send({ status: "error", message: "Logout error", body: error });
-    });
-
+    
+    res.clearCookie("jwtCookie").send({status :"success", message :"Log out success"})
 });
 
 router.get("/github",

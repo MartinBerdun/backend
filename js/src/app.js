@@ -5,12 +5,13 @@ import handelbars from "express-handlebars";
 import __dirname from "./utils.js"; //representa la ruta absoluta de los archivos estaticos
 import viewsRouter from "./routes/views.router.js";
 import socket from './socket.js';
-import mongoose from 'mongoose';
-import session from 'express-session';
-import MongoStore from 'connect-mongo';
+import cookieParser from 'cookie-parser';
+// import mongoose from 'mongoose';
+// import session from 'express-session';
+// import MongoStore from 'connect-mongo';
 import database from './db.js';
 import morgan from 'morgan';
-import config from './config.js';
+// import config from './config.js';
 import sessionsRouter from './routes/sessions.router.js';
 import passport from 'passport';
 import initializePassport from './auth/passport.js';
@@ -22,22 +23,23 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(`${__dirname}/public`));
 app.use(morgan("dev"));
-app.use(
-    session({
-        store: MongoStore.create({
-            mongoUrl: config.dbUrl,
-            ttl: 120,
-        }),
+app.use(cookieParser());
+//     session({
+//         store: MongoStore.create({
+//             mongoUrl: config.dbUrl,
+//             ttl: 120,
+//         }),
 
-    secret:"config.SESSION_SECRET",
-    resave:true,
-    saveUninitialized:false,
-}))
+//     secret:"config.SESSION_SECRET",
+//     resave:true,
+//     saveUninitialized:false,
+// })
+// )
 
 //Passport
 initializePassport();
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 
 //Routes
 app.use("/api/products", productRouter);
