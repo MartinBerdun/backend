@@ -92,15 +92,16 @@ export const getTicketsByEmail = async (req, res) => {
 
 export const sendEmail = async (req, res) => {
     try {
-        const mail = req.body;
-        if (!mail) {
+        const email = req.body;
+
+        if (!email) {
             return res.status(400).send({
             status: "error",
             error: "Incomplete values",
         });
     }
 
-        const sentEmail = await ticketService.sendEmail(mail);
+        const sentEmail = await ticketService.sendEmail({email});
 
         if (!sentEmail) {
             return res.status(404).send({

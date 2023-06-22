@@ -1,7 +1,5 @@
 import { Router } from "express";
-
-import { authRole } from "../middlewares/auth.js";
-
+import passport from "passport";
 import {
     getTickets,
     getTicketById,
@@ -11,20 +9,18 @@ import {
 
 const router = Router();
 
-router.get(
-    "/",(req, res, next) => authRole(req, res, next, "admin"),getTickets
-);
+router.get("/",getTickets);
 
 router.get("/:tid",getTicketById);
 
-router.get(
-    "/orders/:email",(req, res, next) => authRole(req, res, next, "user"),
-    getTicketsByEmail
-);
+router.get("/orders/:email",getTicketsByEmail);
 
-router.post(
-    "/mail",(req, res, next) => authRole(req, res, next, "user"),
-    sendEmail
-);
+router.get("/mail",passport.authenticate("jwt", { session: false }), (req, res)=>{
+    const jwtUser = req.user;
+    console.log({jwtUser});
+
+    const {email} = new UserDTO(jwtUser);
+    console.log({email});
+},sendEmail);
 
 export default router;

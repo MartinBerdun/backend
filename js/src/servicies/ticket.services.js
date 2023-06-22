@@ -127,6 +127,8 @@ async createTicket(cid) {
 
     async sendEmail(mail){
         try {
+            
+
             const sentEmail = await transport.sendMail({
                 from: `${EMAIL_USER}`,
                 to: mail.email,

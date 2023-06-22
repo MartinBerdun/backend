@@ -10,7 +10,7 @@ addToCartForms.addEventListener("submit", (e) => {
             "quantity":1,
         }
         
-        fetch(`/api/carts/6474ac0822d9155eb5096c9e/product/${productId}`, {
+        fetch(`/api/carts/6493976328d77677debf3746/product/${productId}`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',

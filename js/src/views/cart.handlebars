@@ -1,4 +1,6 @@
-{{#each cart.products}}
+
+    <div>
+        {{#each cart.products}}
 <div class="divMayor">
         <div class="divCart">  
             {{!-- <img class="imgCart" src={item.img} alt=""></img> --}}
@@ -11,6 +13,7 @@
         </div>
 </div>
 {{/each}}
+    </div>
 
 <div>
             <div class="totaldiv"><p className="total" >Total: $ {total()}</p></div>

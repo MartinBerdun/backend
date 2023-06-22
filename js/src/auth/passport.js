@@ -37,7 +37,6 @@ const initializePassport = () => {
                 let {role} = req.body;
 
                 let user = await userModel.findOne({email:username});
-                // let user = await userRepository.getUserByEmail({email:username});ç
             
                 console.log({user});
                 
@@ -88,25 +87,7 @@ const initializePassport = () => {
         }
     })
     );
-
-
-    // passport.use("login", 
-    // new LocalStrategy({usernameField:"email"}, async (username, password, done) =>{
-    //     try {
-    //         const user = await userModel.findOne({email:username}).lean()
-
-    //         if(!user) return done(null, false);
-        
-    //         if (!isValidPassword(user, password)) return done(null, false);
-
-    //         delete user.password;
-            
-    //         return done(null, user);
-
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }));
+    //sigue en sessions.router
 
     passport.use( "githubLogin" ,
         new GitHubStrategy({clientID, clientSecret, callbackURL}, 

@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken"
 import { UserDTO } from "../dao/dtos/user.dto.js";
 import config from "../config.js";
 import { userRepository } from "../dao/repositories/users.repository.js";
+import { sendEmail } from "../controllers/ticket.controller.js";
 
 const router = Router();
 
@@ -23,11 +24,12 @@ router.get("/failRegister", (req, res) => {
 })
 
 router.post("/login",
-    // passport.authenticate("login", {failureRedirect:"/failLogin"}) ,
     async (req, res) => {
-        const {email,password}=req.body; //va en controllers
+        const {email,password}=req.body;
         
         const user = await userRepository.getUserByEmail({email: email});
+
+        console.log(user);
 
         if(!user) return res.status(401).send({status: "error", error :"User does not exist"});
 
@@ -36,19 +38,24 @@ router.post("/login",
         const userDTO = new UserDTO(user);
         const jwtUser = JSON.parse(JSON.stringify(userDTO));
 
-        console.log(jwtUser);
-
         const token = jwt.sign(jwtUser,JWT_SECRET, {expiresIn: "24h"})
-
 
         return res
         .cookie("jwtCookie", token, {httpOnly: true}) //aca creo el token en la cookie
         .send({status:"success", message:"Logged in"})
 })
 
-router.get("/current", (req, res) => {
-    return res.send({payload: req.user})
-})
+router.get("/current",passport.authenticate("jwt", { session: false }), (req, res) => {
+    
+    const jwtUser = req.user;
+    console.log({jwtUser});
+
+    const user = new UserDTO(jwtUser);
+    console.log({user});
+    
+    res.render("profile",  {user} );
+},
+)
 
 router.get("/failLogin", (req, res) => {
     res.send({status :"error", error :"Authentication error"})
@@ -60,7 +67,7 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/github",
-    passport.authenticate("githubLogin", {scope:["user:email"]}),
+    passport.authenticate("githubLogin", {session:false, scope:["user:email"]}),
     (req, res) => {})
 
 

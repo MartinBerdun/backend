@@ -1,7 +1,6 @@
 import { Router } from "express";
 const router = Router();
 import passport from "passport";
-import { authRole } from "../middlewares/auth.js";
 
 import { loginView, RegisterView, profileView, homeView, productView, cartView, ticketView, } from "../controllers/views.controller.js";
 
@@ -15,9 +14,9 @@ router.get("/products",passport.authenticate("jwt", { session: false }) ,homeVie
 
 router.get("/product/:pid", productView);
 
-router.get("/cart/:cid",(req, res, next) => authRole(req, res, next, "user"), cartView);
+router.get("/cart/:cid", cartView);
 
-router.get("/tickets",(req, res, next) => authRole(req, res, next, "user"), ticketView);
+router.get("/tickets", ticketView);
 
 
 

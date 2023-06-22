@@ -6,7 +6,7 @@ import { authRole } from "../middlewares/auth.js";
 
 const router = Router();
 
-router.get ("/", getProducts);
+router.get ("/",(req, res, next) => authRole(req, res, next, "user"),getProducts);
 router.get ("/:pid", getProductById);
 router.post ("/",(req, res, next) => authRole(req, res, next, "admin"), addProduct);
 router.put ("/:pid",(req, res, next) => authRole(req, res, next, "admin"), updateProduct);
