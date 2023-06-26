@@ -17,6 +17,8 @@ import passport from 'passport';
 import initializePassport from './auth/passport.js';
 import ticketsRouter from './routes/ticket.router.js';
 
+import {errorMiddleware}  from './middlewares/error.js';
+
 const app = express();
 
 app.use(express.json());
@@ -41,6 +43,7 @@ initializePassport();
 app.use(passport.initialize());
 // app.use(passport.session());
 
+
 //Routes
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
@@ -48,10 +51,14 @@ app.use("/api/sessions", sessionsRouter);
 app.use("/api/tickets", ticketsRouter);
 app.use("/", viewsRouter);
 
+app.use(errorMiddleware);
+
+
 //configuracion de handlebars
 app.engine("handlebars", handelbars.engine()); //crea un motor de plantillas llamado handlebars
 app.set("views", `${__dirname}/views`); //le dice al servidor donde encuentra las plantillas 
 app.set("view engine", "handlebars") // crea el motor de vistas 
+
 
 
 const httpServer = app.listen(8080, () => {
