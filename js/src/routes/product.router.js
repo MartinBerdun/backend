@@ -3,6 +3,8 @@ import { getProducts, addProduct,getProductById,updateProduct, deleteProduct, mo
 
 import { authRole } from "../middlewares/auth.js";
 
+/* import { addLogger } from "../utils/logger.js"; */
+
 
 const router = Router();
 
