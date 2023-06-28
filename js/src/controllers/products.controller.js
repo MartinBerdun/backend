@@ -47,8 +47,8 @@ export const getProducts = async (req, res) => {
         error: `No products found`,
       });
 
-    /*         req.logger.warn("product");
-     */ return res.status(200).send({ status: "ok", payload: products });
+    req.logger.warn("product");
+     return res.status(200).send({ status: "ok", payload: products });
   } catch (error) {
     console.log(`Failed to get products at controller ${error}`);
 
@@ -137,24 +137,15 @@ export const getProductById = async (req, res) => {
         message: ProductMessage.PRODUCT_MESSAGE_FOUND,
         cause: ErrorsCause.MAIN_ErrERROR_CAUSE,
       });
-
-      console.log(CustomError);
-
-      /*const error = CustomError.createError({
-            name: "Add product to cart error",
-            cause: ErrorsCause.MAIN_ErrERROR_CAUSE,
-            message: "Error trying to add product to cart",
-            status: 400,
-            });
-            console.log(error);
-          return next(error);*/
     }
 
     return res.status(200).send({ status: "success", payload: product });
   } catch (error) {
-    return res
+    /* return res
       .status(404)
-      .send({ status: "error", error: "Product not found by Id" });
+      .send({ status: "error", error: "Product not found by Id" }); */
+      
+    req.logger.error(error); 
   }
 };
 

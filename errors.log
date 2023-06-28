@@ -12,3 +12,17 @@ fatal: Test fatal log
 error: Test error log
 error: Test error log
 fatal: Test fatal log
+error: Test error log
+fatal: Test fatal log
+error: undefined {"name":"Error"}
+error: GET /api/products/643c06c02e7c73eef17b0e9e - 27/6/2023
+error: undefined {"name":"Error"}
+error: GET /api/products/643c06c02e7c73eef17b0e9e - 27/6/2023
+error: undefined {"name":"Error"}
+error: GET /api/products/643c06c02e7c73eef17b0e9e - 27/6/2023
+error: GET /api/products/643c06c02e7c73eef17b0e9e - 27/6/2023
+error: GET /api/products/643c06c02e7c73eef17b0e9e - 27/6/2023
+error: undefined {"name":"Error"}
+error: GET /api/products/643c06c02e7c73eef17b0e9e - 27/6/2023
+error: undefined
+error: undefined {"name":"Error"}

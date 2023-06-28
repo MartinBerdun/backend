@@ -3,8 +3,6 @@ import program from "./commander.js";
 
 const loggerType = program.opts().enviroment
 
-console.log(loggerType);
-
 const customLevelOptions = {
   levels: {
     fatal: 0,
