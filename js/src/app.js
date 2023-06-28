@@ -48,7 +48,6 @@ app.use(passport.initialize());
 
 app.use(addLogger);
 
-app.use(errorMiddleware);
 
 //Routes
 app.use("/api/products", productRouter);
@@ -58,6 +57,7 @@ app.use("/api/tickets", ticketsRouter);
 app.use("/api/logger", loggerRouter);
 app.use("/", viewsRouter);
 
+app.use(errorMiddleware);
 //configuracion de handlebars
 app.engine("handlebars", handelbars.engine()); //crea un motor de plantillas llamado handlebars
 app.set("views", `${__dirname}/views`); //le dice al servidor donde encuentra las plantillas

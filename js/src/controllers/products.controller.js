@@ -5,6 +5,7 @@ import {
   ProductMessage,
   ErrorsName,
   ErrorsCause,
+  ParamsMesage,
 } from "../errors/error.enum.js";
 
 import { createFakerProducts } from "../mocks/products.mock.js";
@@ -47,10 +48,12 @@ export const getProducts = async (req, res) => {
         error: `No products found`,
       });
 
-    req.logger.warn("product");
      return res.status(200).send({ status: "ok", payload: products });
+
   } catch (error) {
+
     console.log(`Failed to get products at controller ${error}`);
+    req.logger.error(`Failed to get products at controller ${error}`);
 
     return res
       .status(404)
@@ -72,13 +75,13 @@ export const addProduct = async (req, res) => {
     };
 
     if (
-      !title ||
-      !description ||
-      !price ||
-      !status ||
-      !code ||
-      !stock ||
-      !category
+      !product.title ||
+      !product.description ||
+      !product.price ||
+      !product.status ||
+      !product.code ||
+      !product.stock ||
+      !product.category
     ) {
       CustomError.generateCustomError({
         name: ErrorsName.ERROR_NAME,
@@ -87,7 +90,7 @@ export const addProduct = async (req, res) => {
       });
     }
 
-    /*const products = await productService.consultProducts()
+    const products = await productService.consultProducts()
         console.log({products});
         const productIndex = products.findIndex((prod) => prod.code === product.code);
     
@@ -96,7 +99,7 @@ export const addProduct = async (req, res) => {
             status: "error",
             message: { error: `Product with code ${product.code} already exists` },
             });
-        }*/
+        }
 
     const addProduct = await productService.addProduct(product);
 
@@ -114,7 +117,9 @@ export const addProduct = async (req, res) => {
         status: "Success",
         message: { success: "Product added succesfully", product },
       });
+
   } catch (error) {
+
     return res
       .status(404)
       .send({ status: "error", error: "Product not created or added" });
@@ -124,28 +129,38 @@ export const addProduct = async (req, res) => {
 export const getProductById = async (req, res) => {
   try {
     const { pid } = req.params;
+    req.logger.debug(`Id : ${pid}`);
 
     if (!pid) {
+     /*  throw new CustomError({
+        name : ErrorsName.ERROR_NAME,
+        message: ProductMessage.PRODUCT_MESSAGE_FOUND,
+        cause : ErrorsCause.MAIN_ErrERROR_CAUSE,
+      }); */
       return res.status(404).send({ status: "error", error: "pid not valid" });
     }
 
     const product = await productService.getProductById(pid);
 
     if (!product) {
-      CustomError.generateCustomError({
-        name: ErrorsName.ERROR_NAME,
+      throw new CustomError({
+        name : ErrorsName.ERROR_NAME,
         message: ProductMessage.PRODUCT_MESSAGE_FOUND,
-        cause: ErrorsCause.MAIN_ErrERROR_CAUSE,
+        cause : ErrorsCause.PRODUCT_ERROR_CAUSE,
       });
     }
+   /*  console.log(product);
+    req.logger.debug(`El producto es ${product}`) */
 
     return res.status(200).send({ status: "success", payload: product });
   } catch (error) {
-    /* return res
-      .status(404)
-      .send({ status: "error", error: "Product not found by Id" }); */
-      
-    req.logger.error(error); 
+    req.logger.error(error);
+    
+    throw new CustomError({
+      name : "error",
+      message: ProductMessage.PRODUCT_MESSAGE_FOUND,
+      cause : ErrorsCause.PRODUCT_ERROR_CAUSE,
+    });
   }
 };
 
