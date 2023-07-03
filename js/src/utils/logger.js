@@ -1,6 +1,7 @@
 import winston from "winston";
 import program from "./commander.js";
 
+
 const loggerType = program.opts().enviroment
 
 const customLevelOptions = {
