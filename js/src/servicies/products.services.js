@@ -34,12 +34,12 @@ class ProductService {
     }
 
     async addProduct (title,
-    description,
-    code,
-    price,
-    stock,
-    category,
-    thumbnails) {
+        description,
+        code,
+        price,
+        stock,
+        category,
+        thumbnails) {
         try {
 
             const productcdded = await productRepository.addProduct(title,
@@ -49,7 +49,8 @@ class ProductService {
                 stock,
                 category,
                 thumbnails);
-            if(!productcdded) return console.log("product not added")
+
+            if(!productcdded) return console.log("product not added at service")
 
             return productcdded;
 

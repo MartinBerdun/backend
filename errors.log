@@ -1,0 +1,42 @@
+{"level":"warn","message":"product"}
+{"level":"warn","message":"product"}
+{"level":"warn","message":"product"}
+error: Test error log
+fatal: Test fatal log
+error: Test error log
+fatal: Test fatal log
+error: Test error log
+fatal: Test fatal log
+error: Test error log
+fatal: Test fatal log
+error: Test error log
+error: Test error log
+fatal: Test fatal log
+error: Test error log
+fatal: Test fatal log
+error: undefined {"name":"Error"}
+error: GET /api/products/643c06c02e7c73eef17b0e9e - 27/6/2023
+error: undefined {"name":"Error"}
+error: GET /api/products/643c06c02e7c73eef17b0e9e - 27/6/2023
+error: undefined {"name":"Error"}
+error: GET /api/products/643c06c02e7c73eef17b0e9e - 27/6/2023
+error: GET /api/products/643c06c02e7c73eef17b0e9e - 27/6/2023
+error: GET /api/products/643c06c02e7c73eef17b0e9e - 27/6/2023
+error: undefined {"name":"Error"}
+error: GET /api/products/643c06c02e7c73eef17b0e9e - 27/6/2023
+error: undefined
+error: undefined {"name":"Error"}
+error: undefined {"name":"Error"}
+error: Product not found by Id Product not found or does not exist {"name":"Error","stack":"Error: Product not found or does not exist\n    at Function.generateCustomError (file:///home/martin/Escritorio/backend/js/src/errors/CustomError.js:13:25)\n    at getProductById (file:///home/martin/Escritorio/backend/js/src/controllers/products.controller.js:134:19)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)"}
+error: Product not found by Id at controller in logger Product not found or does not exist {"name":"Error","stack":"Error: Product not found or does not exist\n    at Function.generateCustomError (file:///home/martin/Escritorio/backend/js/src/errors/CustomError.js:13:25)\n    at getProductById (file:///home/martin/Escritorio/backend/js/src/controllers/products.controller.js:134:19)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)"}
+error: Product not found by Id at controller in logger Product not found or does not exist {"name":"Error","stack":"Error: Product not found or does not exist\n    at Function.generateCustomError (file:///home/martin/Escritorio/backend/js/src/errors/CustomError.js:13:25)\n    at getProductById (file:///home/martin/Escritorio/backend/js/src/controllers/products.controller.js:134:19)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)"}
+error: Product not found by Id at controller in logger Product not found or does not exist {"name":"Error","stack":"Error: Product not found or does not exist\n    at Function.generateCustomError (file:///home/martin/Escritorio/backend/js/src/errors/CustomError.js:13:25)\n    at getProductById (file:///home/martin/Escritorio/backend/js/src/controllers/products.controller.js:134:19)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)"}
+error: undefined {"name":"Error"}
+error: undefined {"name":"Error"}
+error: undefined {"name":"Error"}
+error: undefined {"cause":"cause products","name":"Error"}
+error: undefined {"cause":"cause products","name":"Error"}
+error: [object Object]
+error: undefined {"cause":"cause products","name":"Error"}
+error: undefined {"cause":"cause products","name":"Error"}
+error: [object Object]
