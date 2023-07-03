@@ -144,9 +144,9 @@ export const getProductById = async (req, res) => {
 
     if (!product) {
       throw new CustomError({
-        name : ErrorsName.ERROR_NAME,
-        message: ProductMessage.PRODUCT_MESSAGE_FOUND,
-        cause : ErrorsCause.PRODUCT_ERROR_CAUSE,
+        name : "erroroorr",
+        message: "message error",
+        cause : "error cause error",
       });
     }
    /*  console.log(product);
@@ -154,12 +154,12 @@ export const getProductById = async (req, res) => {
 
     return res.status(200).send({ status: "success", payload: product });
   } catch (error) {
-    req.logger.error(error);
-    
+/*     req.logger.error(error);
+ */    
     throw new CustomError({
-      name : "error",
-      message: ProductMessage.PRODUCT_MESSAGE_FOUND,
-      cause : ErrorsCause.PRODUCT_ERROR_CAUSE,
+      name : "erroroorr",
+      message: "message error",
+      cause : "error cause error",
     });
   }
 };
