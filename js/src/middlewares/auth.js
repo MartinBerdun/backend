@@ -13,7 +13,7 @@ const checkLogged = (req, res, next) => {
  */
 
 import jwt from "jsonwebtoken";
-import config from "../config.js";
+import config from "../config/config.js";
 
 const {JWT_SECRET} = config;
 
@@ -32,7 +32,7 @@ const authRole = (req, res, next, roleToVerify) => {
   
     if (role !== roleToVerify) {
       
-      return res.status(403).send({error: "incorrect prmission from authRole"});
+      return res.status(403).send({error: "incorrect permission from authRole"});
     }
   
     next();

@@ -40,3 +40,9 @@ error: [object Object]
 error: undefined {"cause":"cause products","name":"Error"}
 error: undefined {"cause":"cause products","name":"Error"}
 error: [object Object]
+error: Failed to send password reset email: ReferenceError: jwt is not defined
+error: Failed to restore user password: TypeError: this.passwordValidate is not a function
+error: Failed to restore user password: Error: Password must be different from the actual one.
+error: Failed to update user password: Error: Password must be different from the actual one.
+error: Failed to update user password: Error: The new password must be different from the old one.
+error: Failed to change role: ReferenceError: rolUsuario is not defined

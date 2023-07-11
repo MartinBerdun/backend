@@ -103,6 +103,16 @@ export const addProduct = async (req, res) => {
 
         const {cid, pid} = req.params;
         const {quantity} = req.body;
+        const  token  = req.cookies.jwtCookie;
+
+        console.log(token);
+
+    if (!token) {
+      return res.status(400).send({
+        status: "error",
+        error: "Cannot get token",
+      });
+    }
 
         if (!cid || !pid) {
             return res.status(400).send({
@@ -111,7 +121,7 @@ export const addProduct = async (req, res) => {
             });
         }
 
-        const productsAdded = await cartService.addProduct(cid, pid, quantity)
+        const productsAdded = await cartService.addProduct(cid, pid, quantity, token)
 
         if (!productsAdded) {
             return res.status(404).send({

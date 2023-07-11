@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { transport } from "../transport.js";
 
-import config from "../config.js";
+import config from "../config/config.js"
 
 const { EMAIL_USER } = config;
 

@@ -14,6 +14,8 @@ const config = {
   ADMIN_CODER: process.env.ADMIN_CODER,
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
 
+  COOKIE_NAME: process.env.COOKIE_NAME,
+
   EMAIL_SERVICE: process.env.EMAIL_SERVICE,
   EMAIL_PORT: process.env.EMAIL_PORT,
   EMAIL_USER: process.env.EMAIL_USER,

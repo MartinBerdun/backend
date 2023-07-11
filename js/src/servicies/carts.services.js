@@ -1,5 +1,12 @@
 import { cartsRepository } from "../dao/repositories/carts.repository.js";
 
+import { productRepository } from "../dao/repositories/products.repository.js";
+
+import jwt from "jsonwebtoken";
+import config from "../config/config.js";
+
+const {JWT_SECRET} = config;
+
 class CartService {
     constructor() {}
 
@@ -44,11 +51,20 @@ class CartService {
         }
     }
 
-    async addProduct(cartId, productId, quantity) {
+    async addProduct(cartId, productId, quantity, token) {
         try {
 
+            const { email } = jwt.verify(token, JWT_SECRET, {ignoreExpiration: true,});
+            
+              const { owner } = await productRepository.getProductById(productId);
+
+              if (email === owner) {
+                throw new Error("You can't add your own products");
+              }
+
             const product = await cartsRepository.addProduct(cartId, productId, quantity);
-            if (!product) return console.log("Product not added");
+
+            if (!product) return console.log("Product not added seccessfully");
 
             return product;
 

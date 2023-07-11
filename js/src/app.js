@@ -12,7 +12,7 @@ import cookieParser from "cookie-parser";
 import database from "./db.js";
 import morgan from "morgan";
 // import config from './config.js';
-import sessionsRouter from "./routes/sessions.router.js";
+import userRouter from "./routes/user.router.js";
 import passport from "passport";
 import initializePassport from "./auth/passport.js";
 import ticketsRouter from "./routes/ticket.router.js";
@@ -52,7 +52,7 @@ app.use(addLogger);
 //Routes
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
-app.use("/api/sessions", sessionsRouter);
+app.use("/api/users", userRouter);
 app.use("/api/tickets", ticketsRouter);
 app.use("/api/logger", loggerRouter);
 app.use("/", viewsRouter);

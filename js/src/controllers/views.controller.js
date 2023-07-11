@@ -1,4 +1,3 @@
-import { userService } from "../servicies/users.services.js";
 import { productService } from "../servicies/products.services.js";
 import { cartService } from "../servicies/carts.services.js";
 import { ticketService } from "../servicies/ticket.services.js";
@@ -92,34 +91,32 @@ export const ticketView = async (req, res) => {
             title: "Tickets",
         })
 
-    //     const  email = req.user;
-    //     console.log(email);
-    //     // const emailUser = await userService.getUsersByEmail(email);
-    //     const userTickets = await ticketService.getTicketsByEmail(email);
-    //     userTickets.forEach((ticket) => {
-    //     const date = new Date(ticket.purchase_datetime).toLocaleString();
-    //     ticket.purchase_datetime = date;
-    // });
-    //     res.render("ticket", {
-    //     user: req.session.user,
-    //     userTickets,
-    //     style: "styles.css",
-    // });
-    // res.render("ticket", {
-    //     //     user: req.session.user,
-    //         tickets,
-    //     //     style: "styles.css",
-
-    // if (!userTickets) {
-    //     return res.status(404).render("error", {
-    //     message: "Error 404: Tickets not found",
-    //     // style: "styles.css",
-    // });
-    // }
     } catch (error) {
         console.log(`Failed to render ticket view: ${error}`);
     res
         .status(500)
         .send({ status: "error", error: "Failed to render ticket view" });
+    }
+}
+
+export const restoreView = (req, res) => {
+    try {
+        res.render("restore")
+    } catch (error) {
+        console.log(`Failed to render restore password view: ${error}`);
+        res
+        .status(500)
+        .send({ status: "error", error: "Failed to render restore password view" });
+    }
+}
+
+export const newPasswordView = (req, res) => {
+    try {
+        res.render("newPassword")
+    } catch (error) {
+        console.log(`Failed to render restore password view: ${error}`);
+        res
+        .status(500)
+        .send({ status: "error", error: "Failed to render restore password view" });
     }
 }

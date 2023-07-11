@@ -3,13 +3,13 @@ import local from "passport-local";
 import userModel from "../dao/models/user.model.js";
 import { createHash,isValidPassword } from "../utils.js";
 import GitHubStrategy from "passport-github2"
-import config from "../config.js";
+import config from "../config/config.js";
 import cartModel  from "../dao/models/carts.model.js";
 import jwt from "passport-jwt"
 import cookieParser from "cookie-parser";
 import { userRepository } from "../dao/repositories/users.repository.js";
 
-const {clientID , clientSecret , callbackURL, JWT_SECRET, ADMIN_EMAIL} = config
+const {clientID , clientSecret , callbackURL, JWT_SECRET, ADMIN_EMAIL, COOKIE_NAME} = config
 
 const LocalStrategy = local.Strategy;
 const JWTStrategy = jwt.Strategy;
@@ -18,7 +18,7 @@ const ExtractJwt = jwt.ExtractJwt; // jwt tiene una opcion extractjwt para extra
 const cookieExtractor = (req) => {
     let token = null;
     if (req && req.cookies){
-        token = req.cookies["jwtCookie"]
+        token = req.cookies[COOKIE_NAME]
     }
     return token;
 }

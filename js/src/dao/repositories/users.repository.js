@@ -12,6 +12,15 @@ class UserRepository {
         }
     }
 
+    getUserById = async (id)=>{
+        try {
+            const user = await userModel.findOne(id);
+            return user;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
     
     getUserByEmail = async (email)=>{
         try {
@@ -39,6 +48,15 @@ class UserRepository {
             console.log(error);
         }
     };
+
+    updateUser = async (query, update) => {
+        try {
+          const updatedUser = await userModel.updateOne(query, update);
+          return updatedUser;
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
 
 }

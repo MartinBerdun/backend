@@ -1,18 +1,16 @@
 import { Router } from "express";
-// import userModel from "../dao/models/user.model.js";
-// import { isValidPassword, createHash } from "../utils.js";
 import passport from "passport";
-import { userService } from "../servicies/users.services.js";
 import { isValidPassword } from "../utils.js";
 import jwt from "jsonwebtoken"
 import { UserDTO } from "../dao/dtos/user.dto.js";
-import config from "../config.js";
+import config from "../config/config.js";
 import { userRepository } from "../dao/repositories/users.repository.js";
-import { sendEmail } from "../controllers/ticket.controller.js";
+
+import { recoverPassword, updatePassword, changeRole } from "../controllers/users.controller.js";
 
 const router = Router();
 
-const {JWT_SECRET} = config;
+const {JWT_SECRET, COOKIE_NAME} = config;
 
 router.post("/register", passport.authenticate("register", {failureRedirect :"/api/sessions/failRegister", session:false})
 ,async (req, res) => {
@@ -41,7 +39,7 @@ router.post("/login",
         const token = jwt.sign(jwtUser,JWT_SECRET, {expiresIn: "24h"})
 
         return res
-        .cookie("jwtCookie", token, {httpOnly: true}) //aca creo el token en la cookie
+        .cookie(COOKIE_NAME, token, {httpOnly: true}) //aca creo el token en la cookie
         .send({status:"success", message:"Logged in"})
 })
 
@@ -72,12 +70,21 @@ router.get("/github",
 
 
 router.get("/githubcallback",
-    passport.authenticate("githubLogin", {failureRedirect:"/login"}),
+    passport.authenticate("githubLogin", {session:false,failureRedirect:"/login"}),
     async (req, res) => {
         req.session.user = req.user;
         res.redirect("/profile");
     }
 );
+
+router.post("/premium/:uid",
+     (req, res, next) => veifyRole(req, res, next, "admin"), 
+    changeRole
+  );
+
+router.post("/restore", recoverPassword);
+
+router.put("/resetPassword", updatePassword);
 
 
 export default router;

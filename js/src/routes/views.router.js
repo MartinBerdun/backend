@@ -2,7 +2,7 @@ import { Router } from "express";
 const router = Router();
 import passport from "passport";
 
-import { loginView, RegisterView, profileView, homeView, productView, cartView, ticketView, } from "../controllers/views.controller.js";
+import { loginView, RegisterView, profileView, homeView, productView, cartView, ticketView, restoreView, newPasswordView} from "../controllers/views.controller.js";
 
 router.get("/",  loginView);
 
@@ -17,6 +17,12 @@ router.get("/product/:pid", productView);
 router.get("/cart/:cid", cartView);
 
 router.get("/tickets", ticketView);
+
+router.get("/restore", restoreView);
+
+router.get("/resetPassword", newPasswordView);
+
+
 
 
 

@@ -33,7 +33,7 @@ addToCartForms.forEach((form) => {
 });
 
 logoutBtn.addEventListener("click", () => {
-    fetch(`/api/sessions/logout`, {
+    fetch(`/api/users/logout`, {
         method: "GET",
     })
         .then(() => {

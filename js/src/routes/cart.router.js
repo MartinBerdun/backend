@@ -9,7 +9,7 @@ const router = Router();
 router.get("/", getCarts);
 router.get("/:cid", getCartById);
 router.post("/", createCart);
-router.post("/:cid/product/:pid",(req, res, next) => authRole(req, res, next, "user"),addProduct);
+router.post("/:cid/product/:pid",/* (req, res, next) => authRole(req, res, next, ["user", "premium"]), */addProduct);
 router.put("/:cid", updateCart);
 router.put("/:cid/product/:pid", updateQuantityInCart);
 router.delete("/:cid/product/:pid", deleteProductFromCart);

@@ -13,13 +13,13 @@ const userSchema = new mongoose.Schema({
     password: String,
     role: {
         type: String,
-        enum: ["admin", "user"],
+        enum: ["admin", "user", "premium"],
         default: "user"
     },
     cart: {
         // type: mongoose.Schema.Types.ObjectId,
         type: String,
-        default : "6474ac0822d9155eb5096c9e",
+        default : "6493976328d77677debf3746",
         ref:"carts"
     }
 });

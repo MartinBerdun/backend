@@ -3,6 +3,8 @@ import { productRepository } from "../dao/repositories/products.repository.js";
 class ProductService {
     constructor() {}
 
+    //VER PARTE DE LA CLASE A LOS 58 MINUTOS DONDE DICE QUE LAS VALIDACIONES DE LOS IF VAN SOLAMENTE EN EL CONTROLLER Y NO EN EL SERVICE 
+
 
     async getProducts (limit, page, category, status, sort) {
         try {
@@ -14,9 +16,7 @@ class ProductService {
                 status,
                 sort
             );
-
-            if (!products) return console.log("products not found at service");
-
+            
             return products;
 
         } catch (error) {
@@ -27,7 +27,7 @@ class ProductService {
     async consultProducts() {
         try {
             const products = await productRepository.consultProducts();
-            if (!products) return console.log("products not found");
+            return products;
         } catch (error) {
             console.log(error);
         }
@@ -39,20 +39,25 @@ class ProductService {
         price,
         stock,
         category,
-        thumbnails) {
+        thumbnails,
+        token) {
         try {
 
-            const productcdded = await productRepository.addProduct(title,
+            const productadded = await productRepository.addProduct(title,
                 description,
                 code,
                 price,
                 stock,
                 category,
-                thumbnails);
+                thumbnails,
+                owner = "admin");
 
-            if(!productcdded) return console.log("product not added at service")
+                const { role, email } = jwt.verify(token, JWT_SECRET, {
+                    ignoreExpiration: true,
+                  });
+                  role === "premium" ? (productadded.owner = email) : null;
 
-            return productcdded;
+            return productadded;
 
         } catch (error) {
             console.log(error);
@@ -63,8 +68,7 @@ class ProductService {
         try {
 
             const product = await productRepository.getProductById(pid);
-            if(!product) return console.log("product not found")
-
+            
             return product;
 
         } catch (error) {
@@ -76,21 +80,28 @@ class ProductService {
         try {
 
             const productUpdated = await productRepository.updateProduct(id, product);
-            if(!productUpdated) return console.log("product not updated");
             
-            return product;
+            return productUpdated;
         
         } catch (error) {
             console.log(error);
         }
     }
 
-    async deleteProduct(id) {
+    async deleteProduct(id, token) {
         try {
 
-            const product = await productRepository.deleteProduct(id);
-            if(!product) return console.log("product not deleted");
+            const { role, email } = jwt.verify(token, JWT_SECRET, {
+                ignoreExpiration: true,
+              });
+              const { owner } = await productRepository.getProductById(id);
+              
+              if (role === "premium" && email !== owner) {
+                throw new Error("You can only delete products you own");
+              }
 
+            const product = await productRepository.deleteProduct(id);
+            
             return product;
 
         } catch (error) {
