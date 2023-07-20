@@ -12,7 +12,7 @@ paths :  #en este archivo se manejan las siguientes rutas (swagger lo hace)
               schema:
                 type: array
                 items: 
-                  $ref: "#components/schemas/Product" #hace referencia al schema de abajo que esta en components
+                  $ref: "#components/schemas/Carts" #hace referencia al schema de abajo que esta en components
         "500":
           description: Error en la conexion con la base de datos
 
@@ -20,12 +20,6 @@ paths :  #en este archivo se manejan las siguientes rutas (swagger lo hace)
       summary: Agrega un carrito de compras
       tags:
         - Carts
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-             $ref: '#components/requestBodies/productBody'
       responses:
         "200": 
           description: El carrito fue agregado exitosamente
@@ -34,9 +28,9 @@ paths :  #en este archivo se manejan las siguientes rutas (swagger lo hace)
               schema:
                 type: array
                 items: 
-                  $ref: "#components/schemas/Product" #hace referencia al schema de abajo que esta en components
-        "500":
-          description: Error en la conexion con la base de datos
+                  $ref: "#components/schemas/Cart" #hace referencia al schema de abajo que esta en components
+        "401":
+          description: No se ha podido crear el carrito
 
   /api/carts/{cid}:
     get:
@@ -52,12 +46,12 @@ paths :  #en este archivo se manejan las siguientes rutas (swagger lo hace)
           $type: string
       responses:
         "200":
-          description: Carrito encontrado
+          description: Carrito encontrado exitosamente
           content:
             application/json:
-              $ref: '#components/schemas/Product'
+              $ref: '#components/schemas/Cart'
         "404":
-          description: Error en la conexion con la base de datos
+          description: Error al encontrar el carrito por su Id
 
     put:
       summary: Actaliza un carrito a partir de su id
@@ -78,7 +72,7 @@ paths :  #en este archivo se manejan las siguientes rutas (swagger lo hace)
              $ref: '#components/requestBodies/productBody'
       responses:
         "200":
-          description: Carrito actualizado
+          description: Carrito actualizado exitosamente
           content:
             application/json:
               $ref: '#components/schemas/Product'
@@ -101,26 +95,169 @@ paths :  #en este archivo se manejan las siguientes rutas (swagger lo hace)
           description: Carrito eliminado
           content:
             application/json:
-              $ref: '#components/schemas/Product'
+              $ref: '#components/schemas/Cart'
+        "404":
+          description: No se ha podido eliminar el carrito
+  
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Agrega un producto al carrito
+      tags:
+        - Carts
+      parameters:
+      - name : cid
+        in: path
+        required: true
+        description: Id del carrito que se desea eliminar
+        schema:
+          $type: string
+      - name: pid
+        in: path
+        required: true
+        description: Id del producto que se desea agregar
+        schema:
+          $type: string
+      responses:
+        '200':
+          description: Éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts'
+        "404":
+          description: No se ha podido eliminar el carrito
+    
+    put:
+      summary: Actualiza la cantidad en el carrito
+      tags:
+        - Carts
+      parameters:
+      - name : cid
+        in: path
+        required: true
+        description: Id del carrito que se desea eliminar
+        schema:
+          $type: string
+      - name: pid
+        in: path
+        required: true
+        description: Id del producto que se desea agregar
+        schema:
+          $type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/CartBodyQuantity"
+      responses:
+        '200':
+          description: Éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts'
         "404":
           description: No se ha podido eliminar el carrito
 
+    delete:
+      summary: Elimina un producto del carrito
+      tags:
+        - Carts
+      parameters:
+      - name : cid
+        in: path
+        required: true
+        description: Id del carrito del que se desea eliminar
+        schema:
+          $type: string
+      - name: pid
+        in: path
+        required: true
+        description: Id del producto que se desea eliminar
+        schema:
+          $type: string
+      responses:
+        '200':
+          description: Se ha eliminado el producto del carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "404":
+          description: No se ha podido crear el ticket
+
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Crea un ticket del carrito
+      tags:
+        - Carts
+      parameters:
+      - name : cid
+        in: path
+        required: true
+        description: Id del carrito 
+        schema:
+          $type: string
+      responses:
+        '200':
+          description: Se ha creado el ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+        "404":
+          description: No se ha podido eliminar el producto del carrito
+
+
+
+
 components:
   schemas:
+    Ticket:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id del ticket
+        code: 
+          type: string
+          description: Code del ticket
+        purchase_datetime: 
+          type: datetime
+          description: Date del ticket en que se creo
+        ammount:
+          type: string
+          description: Amount del ticket
+        purchaser:
+          type: string
+          description: Cliente del ticket
+
     Cart:
       type: object
       properties:
         _id:
           type: string
-          description: ID del carrito
+          description: ID del carrito autogenerado por Mongo
+        products:
+          type: array
+          items: []
+          description: Lista de productos en el carrito
+    
+    Carts:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID del carrito autogenerado por Mongo
         products:
           type: array
           items:
-            $ref: '#/components/schemas/CartProduct'
+            $ref: '#/components/schemas/ProductInCart'
           description: Lista de productos en el carrito
-        
+      
 
-    CartProduct:
+    ProductInCart:
       type: object
       properties:
         _id:
@@ -130,5 +267,15 @@ components:
           $ref: '#/components/schemas/Product'
           description: Detalles del producto
         quantity:
-          type: integer
+          type: number
           description: Cantidad del producto en el carrito
+
+  requestBodies:
+    CartBodyQuantity:
+      type: object
+      properties:
+        quantity:
+          type: number
+          description: Cantidad del producto en el carrito
+      example:
+        quantity: 22

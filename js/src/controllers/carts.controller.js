@@ -61,9 +61,10 @@ export const createTicket = async (req, res) => {
         });
     }
 
-        res.status(201).send({ status: "success", payload: newTicket });
+        res.status(200).send({ status: "success", payload: newTicket });
+
     } catch (error) {
-        console.log(`Failed to create ticket with mongoose ${error}`);
+        console.log(`Failed to create ticket ${error}`);
         return res
         .status(500)
         .send({ status: "error", error: "Failed to create ticket" });

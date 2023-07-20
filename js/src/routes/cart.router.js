@@ -7,15 +7,18 @@ const router = Router();
 
 //GET CARTS
 router.get("/", getCarts);
-router.get("/:cid", getCartById);
 router.post("/", createCart);
-router.post("/:cid/product/:pid",/* (req, res, next) => authRole(req, res, next, ["user", "premium"]), */addProduct);
+
+router.get("/:cid", getCartById);
 router.put("/:cid", updateCart);
+router.delete("/:cid", deleteCart);
+
+
+router.post("/:cid/product/:pid",/* (req, res, next) => authRole(req, res, next, ["user", "premium"]), */addProduct);
 router.put("/:cid/product/:pid", updateQuantityInCart);
 router.delete("/:cid/product/:pid", deleteProductFromCart);
-router.delete("/:cid", deleteCart);
-router.post("/:cid/purchase",createTicket
-);
+
+router.post("/:cid/purchase",createTicket);
 
 
 export default router;

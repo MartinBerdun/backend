@@ -1,17 +1,17 @@
-paths :  #en este archivo se manejan las siguientes rutas (swagger lo hace)
+paths: #en este archivo se manejan las siguientes rutas (swagger lo hace)
   /api/products/: #aca se especifica la ruta en donde estan los endpoints
     get: #que verbo http se puede usar
       summary: Obtiene todos los productos #resumen de lo que hace el enpoint
       tags:
         - Products
       responses:
-        "200": 
+        "200":
           description: Los productos fueron obtenidos exitosamente desde la base de datos
           content: #arroja como un ejemplo al hacer el endpoint
             application/json:
               schema:
                 type: array
-                items: 
+                items:
                   $ref: "#components/schemas/Product" #hace referencia al schema de abajo que esta en components
         "500":
           description: Error en la conexion con la base de datos
@@ -25,15 +25,15 @@ paths :  #en este archivo se manejan las siguientes rutas (swagger lo hace)
         content:
           application/json:
             schema:
-             $ref: '#components/requestBodies/productBody'
+              $ref: "#components/requestBodies/productBody"
       responses:
-        "200": 
+        "200":
           description: El producto fue agregado exitosamente
           content:
             application/json:
               schema:
                 type: array
-                items: 
+                items:
                   $ref: "#components/schemas/Product" #hace referencia al schema de abajo que esta en components
         "500":
           description: Error en la conexion con la base de datos
@@ -44,18 +44,18 @@ paths :  #en este archivo se manejan las siguientes rutas (swagger lo hace)
       tags:
         - Products
       parameters:
-      - name : pid
-        in: path
-        required: true
-        description: Id del producto que se desea solicitar
-        schema:
-          $type: string
+        - name: pid
+          in: path
+          required: true
+          description: Id del producto que se desea solicitar
+          schema:
+            $type: string
       responses:
         "200":
           description: Producto encontrado
           content:
             application/json:
-              $ref: '#components/schemas/Product'
+              $ref: "#components/schemas/Product"
         "404":
           description: Error en la conexion con la base de datos
 
@@ -64,7 +64,7 @@ paths :  #en este archivo se manejan las siguientes rutas (swagger lo hace)
       tags:
         - Products
       parameters:
-        - name : pid
+        - name: pid
           in: path
           required: true
           description: Id del producto que se desea actualizar
@@ -75,36 +75,35 @@ paths :  #en este archivo se manejan las siguientes rutas (swagger lo hace)
         content:
           application/json:
             schema:
-             $ref: '#components/requestBodies/productBody'
+              $ref: "#components/requestBodies/productBody"
       responses:
         "200":
           description: Producto actualizado
           content:
             application/json:
-              $ref: '#components/schemas/Product'
+              $ref: "#components/schemas/Product"
         "401":
           description: No se puede actualizar product
-    
+
     delete:
       summary: Elimina un solo producto a partir de su id
       tags:
         - Products
       parameters:
-      - name : pid
-        in: path
-        required: true
-        description: Id del producto que se desea eliminar
-        schema:
-          $type: string
+        - name: pid
+          in: path
+          required: true
+          description: Id del producto que se desea eliminar
+          schema:
+            $type: string
       responses:
         "200":
           description: Producto eliminado
           content:
             application/json:
-              $ref: '#components/schemas/Product'
+              $ref: "#components/schemas/Product"
         "404":
           description: No se ha podido eliminar el producto
-
 
 components:
   schemas:
@@ -129,7 +128,7 @@ components:
         status:
           type: Boolean
           description: Valor booleano
-        stock: 
+        stock:
           type: number
           description: Stock del prodcuto
         category:
@@ -147,6 +146,7 @@ components:
         code: e8,
         stock: 455,
         category: techno,
+
   requestBodies:
     productBody:
       type: object
@@ -162,7 +162,7 @@ components:
           description: Precio del producto
         status:
           type: boolean
-          description:  Status del producto
+          description: Status del producto
         code:
           type: string
           description: Codigo del producto
@@ -174,9 +174,9 @@ components:
           description: Categoria del producto
       example:
         title: auto
-        description: vehiculo de 4 ruedas 
+        description: vehiculo de 4 ruedas
         price: 345678
         status: true
-        code : ndf64yuhbf
+        code: ndf64yuhbf
         stock: 34
         category: techno
