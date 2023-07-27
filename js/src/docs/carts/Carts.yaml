@@ -75,7 +75,7 @@ paths :  #en este archivo se manejan las siguientes rutas (swagger lo hace)
           description: Carrito actualizado exitosamente
           content:
             application/json:
-              $ref: '#components/schemas/Product'
+              $ref: '#components/schemas/Carts'
         "401":
           description: No se puede actualizar el carrito
     
@@ -232,6 +232,12 @@ components:
         purchaser:
           type: string
           description: Cliente del ticket
+      example:
+        _id: 648635101f517c9ea0d05242
+        code: 32ab21db-5499-4e26-933a-4643924d4581
+        purchase_datetime: 11/6/2023 17:56:47
+        ammount: 89
+        purchaser: ale@correo
 
     Cart:
       type: object
@@ -243,6 +249,9 @@ components:
           type: array
           items: []
           description: Lista de productos en el carrito
+      example:
+        _id: 64b6e11e3360633c64c6c4c6
+        products: []
     
     Carts:
       type: object
