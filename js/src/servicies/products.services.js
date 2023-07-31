@@ -33,20 +33,13 @@ class ProductService {
         }
     }
 
-    async addProduct (title,
-        description,
-        code,
-        price,
-        stock,
-        category,
-        thumbnails,
-        token) {
-        try {
-
+    async addProduct (title,description,price,code, status,stock,category,thumbnails) {
+        try { 
             const productadded = await productRepository.addProduct(title,
                 description,
-                code,
                 price,
+                status,
+                code,
                 stock,
                 category,
                 thumbnails,
@@ -63,6 +56,7 @@ class ProductService {
             console.log(error);
         }
     }
+
 
     async getProductById (pid) {
         try {

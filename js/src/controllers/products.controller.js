@@ -71,7 +71,6 @@ export const addProduct = async (req, res) => {
       code: req.body.code,
       stock: req.body.stock,
       category: req.body.category,
-      thumbnails: req.body.thumbnails,
     };
 
     if (
@@ -83,16 +82,12 @@ export const addProduct = async (req, res) => {
       !product.stock ||
       !product.category
     ) {
-      CustomError.generateCustomError({
-        name: ErrorsName.ERROR_NAME,
-        message: ProductMessage.PRODUCT_MESSAGE_FOUND,
-        cause: ErrorsCause.MAIN_ErrERROR_CAUSE,
-      });
+      console.log("Invalid product");
     }
 
     const products = await productService.consultProducts()
-        console.log({products});
-        const productIndex = products.findIndex((prod) => prod.code === product.code);
+/*          console.log({products});
+ */    const productIndex = products.findIndex((prod) => prod.code === product.code);
     
         if (productIndex !== -1) {
             return res.status(400).send({
@@ -103,20 +98,10 @@ export const addProduct = async (req, res) => {
 
     const addProduct = await productService.addProduct(product);
 
-    if (!addProduct) {
-      CustomError.generateCustomError({
-        name: ErrorsName.ERROR_NAME,
-        message: ProductMessage.PRODUCT_MESSAGE_ADDED,
-        cause: ErrorsCause.MAIN_ErrERROR_CAUSE,
-      });
-    }
 
     return res
       .status(201)
-      .send({
-        status: "Success",
-        message: { success: "Product added succesfully", product },
-      });
+      .send({status: "Success",payload: addProduct});
 
   } catch (error) {
 
@@ -142,25 +127,26 @@ export const getProductById = async (req, res) => {
 
     const product = await productService.getProductById(pid);
 
-    if (!product) {
+   /*  if (!product) {
       throw new CustomError({
         name : "erroroorr",
         message: "message error",
         cause : "error cause error",
       });
-    }
+    } */
    /*  console.log(product);
     req.logger.debug(`El producto es ${product}`) */
 
     return res.status(200).send({ status: "success", payload: product });
   } catch (error) {
+    console.log(error);
 /*     req.logger.error(error);
  */    
-    throw new CustomError({
+    /* throw new CustomError({
       name : "erroroorr",
       message: "message error",
       cause : "error cause error",
-    });
+    }); */
   }
 };
 
