@@ -2,12 +2,11 @@ import cartModel from "../models/carts.model.js";
 
 class CartsRepository {
     constructor(){
-        this.model = cartModel;
     }
 
     getCarts = async () =>{
         try {
-            const carts = await this.model.find();
+            const carts = await cartModel.find();
             return carts;
         } catch (error) {
             console.log(error);
@@ -16,8 +15,8 @@ class CartsRepository {
 
     createCart = async () => {
         try {
-            const newCart = await this.model.create({
-            products: [],
+            const newCart = await cartModel.create({
+            products: []
             })
             return newCart;
         }catch (error) {
@@ -27,7 +26,7 @@ class CartsRepository {
 
     getCartById =async (id) =>{
         try {
-            const cartById = await this.model.findOne({_id:id}).lean();
+            const cartById = await cartModel.findOne({_id:id}).lean();
             return cartById;
         } catch (error) {
             console.log(error);
@@ -38,7 +37,7 @@ class CartsRepository {
         try {
 
             const qty = quantity;
-            const cart = await this.model.findOne({_id:cartId})
+            const cart = await cartModel.findOne({_id:cartId})
 
             if(!cart){
                 return { error: `No se encontró el carrito con id ${cartId}.` }
@@ -49,7 +48,7 @@ class CartsRepository {
             if(productInCart !== -1){
                 cart.products[productInCart].quantity += qty;
             }else {
-                await this.model.updateOne(
+                await cartModel.updateOne(
                     { _id: cartId },
                     {$push: { products: [{ product: prodId, quantity }] }}
                     )
@@ -65,7 +64,7 @@ class CartsRepository {
 
     updateCart = async (cartId, products) =>{
         try {
-            const cart = await this.model.updateOne(
+            const cart = await cartModel.updateOne(
                 {_id : cartId},
                 {$set:{products:[products]}},
                 // {upsert:true}
@@ -87,7 +86,7 @@ class CartsRepository {
     updateQuantityInCart = async (cartId,prodId, quantity) =>{
         try {
 
-            const cart = await this.model.updateOne(
+            const cart = await cartModel.updateOne(
                 {_id:cartId, "products.product":prodId},
                 {$set:{"products.$.quantity":quantity}}
             )
@@ -106,7 +105,7 @@ class CartsRepository {
     deleteProductFromCart = async (cartId, prodId) =>{
         try {
 
-            const productDeleted = await this.model.updateOne(
+            const productDeleted = await cartModel.updateOne(
                 {_id : cartId},
                 {$pull:{products: { product:prodId }}}
                 )
@@ -121,7 +120,7 @@ class CartsRepository {
     deleteCart = async (cartId) => {
         try {
 
-            const deletedCart = await this.model.deleteOne({ _id: cartId });
+            const deletedCart = await cartModel.deleteOne({ _id: cartId });
             return deletedCart;
             
         } catch (error) {

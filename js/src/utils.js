@@ -6,17 +6,25 @@ import bcrypt, { genSaltSync } from "bcrypt";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// config de multer se guarda en storage
+
 const storage = multer.diskStorage({
+
   destination: function (req, file, cb) {
-    cb(null, `${__dirname}/public/images`);
-  }, //indica el destino en donde se va a guardar el archivo
+    let subfolder = ''
+    if (
+      file.fieldname === 'identification' ||
+      file.fieldname === 'address' ||
+      file.fieldname === 'statement'
+    ) {
+      subfolder = '/documents'
+    }
+    cb(null, `${__dirname}/public${subfolder}/${file.fieldname}`)
+  },
+
   filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },//indica con que nombre se va a guardar
-});
-
-
+    cb(null, `${Date.now()}-${file.originalname}`)
+  }
+})
 
 export const createHash = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 

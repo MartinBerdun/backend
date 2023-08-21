@@ -1,4 +1,8 @@
 import { userService } from "../servicies/users.services.js";
+import  jwt  from "jsonwebtoken";
+import config from "../config/config.js";
+
+const {JWT_SECRET, EMAIL_USER}= config;
 
 export const getUsers = async (req,res) => {
     try {
@@ -86,9 +90,11 @@ export const recoverPassword = async (req, res) => {
 
 
 
-  export const changeRole = async (req, res) => {
+export const changeRole = async (req, res) => {
     try {
       const { uid } = req.params;
+
+      req.logger.debug(uid)
   
       if (!uid) {
         return res.status(400).send({
@@ -110,7 +116,48 @@ export const recoverPassword = async (req, res) => {
         message: `Successfully changed role for user ${uid}`,
       });
     } catch (error) {
+      
       req.logger.error(`Failed to change role: ${error}`);
       return res.status(500).send({ status: "error", error: `${error}` });
     }
   };
+
+  export const updateUserDocuments = async (req, res) => {
+    try {
+
+      const { uid } = req.params;
+      const newDocuments = req.files;
+
+      if (!newDocuments)
+        return res
+          .status(400)
+          .send({ status: "error", error: "No documents selected" });
+
+      const user = await userService.getUser({ _id: uid });
+
+      if (!user)
+        return res
+          .status(400)
+          .send({ status: "error", error: `No se encontró el user con id ${uid}`  });
+
+      const updatedUserDocuments = await userService.updateUserDocuments(
+        user,
+        newDocuments
+      );
+
+      if (!updatedUserDocuments) {
+        return res
+          .status(404)
+          .send({ status: "error", error: "Failed to update documents" });
+      }
+  
+      res.status(200).send({ status: "success", message: "Upload documents succesfully" });
+      
+      
+    } catch (error) {
+      
+      req.logger.error(`Failed to update documents: ${error}`);
+
+      return res.status(500).send({ status: "error", error: `Documents cannot be apdated ${error}` });
+    }
+  }

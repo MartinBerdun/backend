@@ -1,17 +1,3 @@
-/* 
-const checkLogin = (req, res, next) => {
-    if (!req.session.user) return res.redirect("/");
-    next();
-}
-
-const checkLogged = (req, res, next) => {
-    if (req.session.user) return res.redirect("/products");
-    console.log(req.session.user);
-    next();
-
-}
- */
-
 import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 
@@ -23,7 +9,6 @@ const authRole = (req, res, next, roleToVerify) => {
     console.log({token});
   
     if (!token) {
-      
       return res.status(401).send({error: "incorrect token from authRole"})
     }
   
@@ -37,4 +22,19 @@ const authRole = (req, res, next, roleToVerify) => {
   
     next();
   };
-export { authRole};
+  
+export {authRole};
+
+/* 
+const checkLogin = (req, res, next) => {
+    if (!req.session.user) return res.redirect("/");
+    next();
+}
+
+const checkLogged = (req, res, next) => {
+    if (req.session.user) return res.redirect("/products");
+    console.log(req.session.user);
+    next();
+
+}
+ */

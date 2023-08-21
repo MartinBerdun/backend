@@ -46,3 +46,44 @@ error: Failed to restore user password: Error: Password must be different from t
 error: Failed to update user password: Error: Password must be different from the actual one.
 error: Failed to update user password: Error: The new password must be different from the old one.
 error: Failed to change role: ReferenceError: rolUsuario is not defined
+error: Cannot update user documents with error: ReferenceError: jwt is not defined
+error: Cannot update user documents with error: ReferenceError: JWT_SECRET is not defined
+error: Cannot update user documents with error: JsonWebTokenError: jwt must be provided
+error: Cannot update user documents with error: JsonWebTokenError: jwt must be provided
+error: Cannot update user documents with error: JsonWebTokenError: jwt must be provided
+error: Cannot update user documents with error: JsonWebTokenError: jwt must be provided
+error: Cannot update user documents with error: TypeError: Cannot destructure property 'token' of 'req.cookies.jwtCookie' as it is undefined.
+error: Cannot update user documents with error: TypeError: Cannot destructure property 'token' of 'req.cookies.jwtCookie' as it is undefined.
+error: Cannot update user documents with error: TypeError: Cannot destructure property 'token' of 'req.cookies.jwtCookie' as it is undefined.
+error: Cannot update user documents with error: TypeError: Cannot destructure property 'token' of 'req.cookies.jwtCookie' as it is undefined.
+error: Cannot update user documents with error: TypeError: Cannot destructure property 'token' of 'req.cookies.jwtCookie' as it is undefined.
+error: Cannot update user documents with error: JsonWebTokenError: jwt must be provided
+error: Cannot update user documents with error: JsonWebTokenError: jwt must be provided
+error: Cannot update user documents with error: JsonWebTokenError: jwt must be provided
+error: Cannot update user documents with error: JsonWebTokenError: jwt must be provided
+error: Cannot update user documents with error: ReferenceError: email is not defined
+error: Failed to change role: ReferenceError: sessionService is not defined
+error: Failed to change role: TypeError: userService.getUser is not a function
+error: Failed to change role: TypeError: userService.updatedUserDocuments is not a function
+error: Failed to change role: TypeError: userRepository.getUser is not a function
+error: Failed to uddate documents: TypeError: userRepository.getUser is not a function
+error: Failed to uddate documents: TypeError: userRepository.getUser is not a function
+error: Failed to uddate documents: TypeError: userRepository.getUser is not a function
+error: Failed to uddate documents: TypeError: userRepository.getUser is not a function
+error: Failed to uddate documents: TypeError: userRepository.getUser is not a function
+error: Failed to uddate documents: TypeError: Cannot destructure property 'documents' of '(intermediate value)' as it is null.
+error: Failed to uddate documents: TypeError: Cannot destructure property 'documents' of '(intermediate value)' as it is null.
+error: Failed to change role: TypeError: Assignment to constant variable.
+error: Failed to change role: ReferenceError: role is not defined
+error: Failed to change role: TypeError: Assignment to constant variable.
+error: Failed to change role: TypeError: Assignment to constant variable.
+error: Failed to change role: TypeError: Assignment to constant variable.
+error: Failed to change role: ReferenceError: res is not defined
+error: Failed to change role: ReferenceError: res is not defined
+error: Failed to change role: ReferenceError: res is not defined
+error: Failed to change role: Error: You're missing the following documentantion to upgrade your role: identification
+error: Failed to change role: Error: You're missing the following documentantion to upgrade your role: identification, address, statement
+error: Failed to change role: Error: You're missing the following documentantion to upgrade your role: statement
+error: Failed to change role: Error: You're missing the following documentantion to upgrade your role: statement
+error: Failed to change role: Error: You're missing the following documentantion to upgrade your role: address
+error: Failed to change role: Error: You're missing the following documentantion to upgrade your role: address

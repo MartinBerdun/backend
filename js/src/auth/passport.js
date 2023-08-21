@@ -45,8 +45,8 @@ const initializePassport = () => {
                     return done(null, false);
                 }
 
-                // const cart = await cartModel.create({})
-                // console.log(cart);
+                const cart = await cartModel.create({})
+                console.log(cart);
 
                 const newUser = {
                     first_name,
@@ -59,10 +59,8 @@ const initializePassport = () => {
                         ? (role = "admin")
                         : (role = "user"),
 
-                    // cart: cart._id,
+                    cart: cart._id,
                 }
-
-                
                 const result = await userModel.create(newUser);
 
                 console.log({result});

@@ -17,11 +17,19 @@ const userSchema = new mongoose.Schema({
         default: "user"
     },
     cart: {
-        // type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         type: String,
-        default : "6493976328d77677debf3746",
         ref:"carts"
-    }
+    },
+    documents: [
+        {
+          _id: false,
+          name: { type: String },
+          reference: { type: String }
+        }
+      ],
+      last_connection: Date,
+      status: Array
 });
 
 const userModel = mongoose.model(userCollection, userSchema);

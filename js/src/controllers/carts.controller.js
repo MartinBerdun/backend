@@ -26,7 +26,7 @@ export const createCart = async (req, res) => {
     try {
         const cart = await cartService.createCart();
 
-        if (!cart) return res.status (404). send({ status: "error", error: "cart not created"})
+        if (!cart) return res.status (404). send({ status: "error", error: "cart not created al controllers"})
 
         return res.status(200).send({status: "success", payload : cart })
 

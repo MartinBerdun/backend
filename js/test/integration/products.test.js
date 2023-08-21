@@ -63,8 +63,8 @@ describe("Set de pruebas de integracion de products", function () {
       .send(productMock)
 
       const { statusCode, ok, _body } = result;
-      console.log(result);
-
+/*       console.log(result);
+ */
       expect(statusCode).to.be.ok.and.eq(201)
       expect(_body.payload).to.have.property('_id')
       expect(ok).to.be.ok
@@ -74,8 +74,8 @@ describe("Set de pruebas de integracion de products", function () {
       const result = await requester.get(
         `/api/products/643c06c02e7c73eef17b0e9d`
       )
-      console.log(result);
-
+/*       console.log(result);
+ */
       const { statusCode, ok, _body } = result;
 
       expect(statusCode).to.be.ok.and.eq(200)
@@ -93,8 +93,8 @@ describe("Set de pruebas de integracion de products", function () {
       .set('Cookie', [`${this.cookie.name}=${this.cookie.value}`])
       .send(mockUpdate);
 
-      console.log(result);
-
+/*       console.log(result);
+ */
       const {statusCode, _body, ok} = result
 
       expect(statusCode).to.be.ok.and.eq(200)
@@ -108,8 +108,8 @@ describe("Set de pruebas de integracion de products", function () {
       const result = await requester.delete("/api/products/643c06c02e7c73eef17b0e9d")
       .set('Cookie', [`${this.cookie.name}=${this.cookie.value}`])
 
-      console.log(result);
-
+/*       console.log(result);
+ */
       const {statusCode, _body, ok} = result
 
       expect(statusCode).to.be.ok.and.eq(200)

@@ -27,6 +27,16 @@ class UserService {
         }
     }
 
+    async getUser(id) {
+      try {
+        const user = await userRepository.getUserById(id)
+        if(!user) return console.log("No user found at service");
+        return user;
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+
     async login(email, password){
         try {
 
@@ -150,33 +160,88 @@ class UserService {
     }
   }
 
-  async changeRole(uid) {
+
+
+
+  async changeRole (uid) {
     try {
 
-      let { role } = await userRepository.getUserById({ _id: uid });
+      const user = await userRepository.getUserById({ _id: uid })
+      
+      const requiredStatus = ['identification', 'address', 'statement']
+      let missingStatus = []
+      let roleChanged = false
 
-    if (role === "user") {
-      role = "premium";
-    } else if (role === "premium") {
-      role = "user";
-    } else {
-      role = "admin";
-    }
+        const userStatus = user.status
 
-  console.log("Nuevo rol del usuario: " + role);
+        missingStatus = requiredStatus.filter((el) => !userStatus.includes(el))
 
-      const roleChanged = await userRepository.updateUser(
-        { _id: uid },
-        { role }
-      );
-      if (!roleChanged)
-        throw new Error(`Failed to change role for user ${uid}`);
+        if (requiredStatus.every((el) => userStatus.includes(el)) || user.role === 'premium') {
 
-      return roleChanged;
+          const role = user.role === 'user' ? 'premium' : 'user'
+
+          roleChanged = await userRepository.updateUser({ _id: uid },{ role })
+
+        } else {
+
+          throw new Error(`You're missing the following documentantion to upgrade your role: ${missingStatus.join(', ')}`)
+        }
+      
+      if (!roleChanged) { throw new Error(`Failed to change role for user ${uid}`) }
+
+      return roleChanged
 
     } catch (error) {
-      console.log(`Failed to change role: ${error}`);
-      throw error;
+
+      throw new Error ( error)
+    }
+  }
+
+
+  async updateUserDocuments (email, userDocuments) {
+    try {
+
+      const newUserStatus = []
+      const newUserDocuments = []
+
+      const { documents } = await userRepository.getUserByEmail(email)
+
+      Object.values(userDocuments).forEach((els) => {
+        els.forEach((el) => {
+          const document = {
+            name: el.fieldname,
+            reference: `${el.fieldname}/${el.filename}`
+          }
+          newUserDocuments.push(document)
+        })
+      })
+
+      newUserDocuments.forEach((newUserDoc) => {
+        const existingDocIndex = documents.findIndex(
+          (doc) => doc.name === newUserDoc.name
+        )
+        if (existingDocIndex !== -1) {
+          documents[existingDocIndex] = newUserDoc
+        } else {
+          documents.push(newUserDoc)
+        }
+      })
+
+      documents.forEach((el) => {
+        newUserStatus.push(el.name)
+      })
+
+      const updates = {
+        documents,
+        status: newUserStatus
+      }
+
+      const updatedUser = await userRepository.updateUser( email , updates)
+
+      return updatedUser;
+
+    } catch (error) {
+      throw error
     }
   }
 

@@ -5,8 +5,9 @@ import jwt from "jsonwebtoken"
 import { UserDTO } from "../dao/dtos/user.dto.js";
 import config from "../config/config.js";
 import { userRepository } from "../dao/repositories/users.repository.js";
-
-import { recoverPassword, updatePassword, changeRole } from "../controllers/users.controller.js";
+import { uploader } from "../utils.js";
+import { recoverPassword, updatePassword, changeRole, updateUserDocuments} from "../controllers/users.controller.js";
+import { authRole } from "../middlewares/auth.js";
 
 const router = Router();
 
@@ -78,9 +79,22 @@ router.get("/githubcallback",
 );
 
 router.post("/premium/:uid",
-     (req, res, next) => veifyRole(req, res, next, "admin"), 
+    passport.authenticate("jwt", { session: false }),
+    /* (req, res, next) => authRole(req, res, next, ["admin", "user","premium"]), */ 
     changeRole
-  );
+);
+
+router.post(
+    '/:uid/documents',
+    (req, res, next) => authRole(req, res, next, ['user', 'premium']),
+    uploader.fields([
+      { name: 'identification' },
+      { name: 'address' },
+      { name: 'statement' }
+    ]),
+    updateUserDocuments
+)
+
 
 router.post("/restore", recoverPassword);
 
