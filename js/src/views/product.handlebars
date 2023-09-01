@@ -1,5 +1,15 @@
+<h1>Hi {{user.name}}!</h1>
+<ul>
+    <li>Your role here is: {{user.role}}</li>
+    <li>Your registered email is: {{user.email}}</li>
+    <li>Your age is: {{user.age}}</li>
+    <li>Your cart is:<span class="hidden" id="userCartId">{{user.cart}}</span></li>
+</ul>
+<br>
+<br>
 
-<form id="addToCart-{{this._id}}">
+{{#if product}}
+<form id="addToCart-{{product._id}}">
     <div class="divItem">
         <p class="nombre">{{product.title}}</p>
         {{!-- <img class="imgDetail" src={{product.img}} alt=""></img> --}}
@@ -11,6 +21,7 @@
         <button type="submit">Agregar</button>
     </div>
 </form>
+{{/if}}
 
 <script
 src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js

@@ -3,15 +3,22 @@
     <li>Your role here is: {{user.role}}</li>
     <li>Your registered email is: {{user.email}}</li>
     <li>Your age is: {{user.age}}</li>
-    <li>Your cart is: {{user.cart}}</li>
+    <li>Your cart is:<span class="hidden" id="userCartId">{{user.cart}}</span></li>
+    
     
 
 </ul>
 <br>
 <br>
 
+<button id="goToCart">Ir al Carrito</button>
+
+<br>
+<br>
+
 
 <button id="logoutButton" >Log out</button>
+
     
     
     {{#each products}}
@@ -24,7 +31,7 @@
             <h4 id="title">{{this.title}}</h4>  
             <p class="price">${{this.price}}</p> 
             <p>{{this.description}}</p>
-            <button class="botonAgregar" type="submit">Add to cart 🛒</button>
+            <button class="botonAgregar" type="submit">Add to cart </button>
             </form>
             <a href="product/{{this._id}}">
             <button class= "botonAgregar"

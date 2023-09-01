@@ -1,4 +1,11 @@
 import { productRepository } from "../dao/repositories/products.repository.js";
+import config from "../config/config.js";
+
+import jwt  from "jsonwebtoken";
+
+const {JWT_SECRET, EMAIL_USER}= config;
+
+import { transport } from "../transport.js";
 
 class ProductService {
     constructor() {}
@@ -33,22 +40,29 @@ class ProductService {
         }
     }
 
-    async addProduct (title,description,price,code, status,stock,category,thumbnails) {
+    async addProduct (title,description,price,code,stock,category,thumbnails,token) {
         try { 
-            const productadded = await productRepository.addProduct(title,
+            
+            const product = {
+                title,
                 description,
-                price,
-                status,
                 code,
+                price,
                 stock,
                 category,
                 thumbnails,
-                owner = "admin");
+                owner: 'admin'
+            }
 
-                const { role, email } = jwt.verify(token, JWT_SECRET, {
-                    ignoreExpiration: true,
-                  });
-                  role === "premium" ? (productadded.owner = email) : null;
+            const { role, email } = jwt.verify(token, JWT_SECRET, {
+                ignoreExpiration: true,
+              });
+        
+            role === "premium" ? (product.owner = email) : null; 
+            
+            const productadded = await productRepository.addProduct(product);
+            
+            if(!productadded) throw new Error ("error at adding new product at controllers")
 
             return productadded;
 
@@ -88,15 +102,42 @@ class ProductService {
             const { role, email } = jwt.verify(token, JWT_SECRET, {
                 ignoreExpiration: true,
               });
+
               const { owner } = await productRepository.getProductById(id);
               
               if (role === "premium" && email !== owner) {
                 throw new Error("You can only delete products you own");
               }
 
-            const product = await productRepository.deleteProduct(id);
+            const deletedProduct = await productRepository.deleteProduct(id);
+
+            if (!deletedProduct) {
+                throw new Error(`Error deleting product with id: ${id}`)
+              }
+
+            const sentEmail = await transport.sendMail({
+                from: `${EMAIL_USER}`,
+                to: user.email,
+                subject: `You have been deleted ${user.name}!`,
+                attachments: [],
+            });
+            return sentEmail;
             
             return product;
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async deleteManyProducts(limit) {
+        try {
+            const limit = 50;
+
+            const products = await productRepository.deleteManyProducts({}, {limit})
+
+            return products;
+
 
         } catch (error) {
             console.log(error);

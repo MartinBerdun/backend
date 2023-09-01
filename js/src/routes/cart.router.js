@@ -14,7 +14,7 @@ router.put("/:cid", updateCart);
 router.delete("/:cid", deleteCart);
 
 
-router.post("/:cid/product/:pid",(req, res, next) => authRole(req, res, next, ["user", "premium"]),addProduct);
+router.post("/:cid/product/:pid"/* ,(req, res, next) => authRole(req, res, next, ["user", "premium"]) */,addProduct);
 router.put("/:cid/product/:pid", updateQuantityInCart);
 router.delete("/:cid/product/:pid", deleteProductFromCart);
 

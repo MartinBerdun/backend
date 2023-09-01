@@ -2,12 +2,11 @@ import express from "express";
 import productRouter from "./routes/product.router.js";
 import cartRouter from "./routes/cart.router.js";
 import handelbars from "express-handlebars";
-import __dirname from "./utils.js"; //representa la ruta absoluta de los archivos estaticos
+import __dirname from "./utils.js"; 
 import viewsRouter from "./routes/views.router.js";
 import socket from "./socket.js";
 import cookieParser from "cookie-parser";
 import database from "./db.js";
-import morgan from "morgan";
 import userRouter from "./routes/user.router.js";
 import passport from "passport";
 import initializePassport from "./auth/passport.js";
@@ -50,8 +49,6 @@ const swaggerOPtions = {
 const spec = swaggerJSDoc(swaggerOPtions)
 
 app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(spec))
-
-
 
 //Routes
 app.use("/api/products", productRouter);

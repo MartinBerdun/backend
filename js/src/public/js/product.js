@@ -1,16 +1,19 @@
-const addToCartForms = document.querySelectorAll('[id^="addToCart-"]');
-console.log(addToCartForms);
+const addToCartForms = document.querySelector('[id^="addToCart-"]');
 
 addToCartForms.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        const productId = form.getAttribute("id").split("-")[1];
-        console.log(productId);
+        const productId = addToCartForms.getAttribute("id").split("-")[1];
+
+        const cartId = document.querySelector('#userCartId').textContent;
+
+        console.log({productId});
+
         const quantity = {
             "quantity":1,
         }
         
-        fetch(`/api/carts/6493976328d77677debf3746/product/${productId}`, {
+        fetch(`/api/carts/${cartId}/product/${productId}`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -29,5 +32,3 @@ addToCartForms.addEventListener("submit", (e) => {
             })
             .catch((error) => console.log(error));
         });
-
-console.log("kernve");

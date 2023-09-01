@@ -1,0 +1,33 @@
+<div>
+  <nav>
+        <a href="/">
+          <button>Home</button>
+        </a>
+  </nav>
+  <h1>User administration</h1>
+    <hr>
+  <div>{{#each existingUsers}}
+        <div>
+          <div >
+            <h2>{{this.name}}</h2>
+            <h3>Role : {{this.role}}</h3>
+            <h3>Cart Id : {{this.cart}}</h3>
+            <p>Last connection: {{this.last_connection}}</p>
+          </div>
+        <button id="deleteUser-{{this.cart}}"><span>Delete user</span></button>
+        </div>
+      </div>
+    {{/each}}
+</div>
+<hr>
+<br>
+<br>
+  <div >
+    <button id="deleteInactiveUsers"><span>Delete inactive users</span></button>
+  </div>
+<script
+  src="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js
+"
+></script>
+<script src="/js/admin.js" type="module"></script>

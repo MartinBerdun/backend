@@ -11,7 +11,7 @@ const config = {
   clientSecret: process.env.CLIENT_SECRET,
   callbackUrl: process.env.CALLBACK_URL,
   JWT_SECRET: process.env.JWT_SECRET,
-  ADMIN_CODER: process.env.ADMIN_CODER,
+  ADMIN_CODER: process.env.ADMIN_EMAIL,
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
 
   COOKIE_NAME: process.env.COOKIE_NAME,

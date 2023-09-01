@@ -82,6 +82,16 @@ class ProductsRepository {
             console.log(error);
         }
     }
+
+    deleteManyProducts = async (limit) => {
+    try {
+        
+        const products = await this.model.deleteMany(limit);
+        return products;
+    } catch (error) {
+        console.log(error);
+    }
+    }
 }
 
 export const productRepository = new ProductsRepository();

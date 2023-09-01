@@ -1,7 +1,8 @@
+import { UserDTO } from "../dao/dtos/user.dto.js";
 import { userRepository } from "../dao/repositories/users.repository.js";
 import { isValidPassword, createHash } from "../utils.js";
+import { cartsRepository } from "../dao/repositories/carts.repository.js";
 
-import { UserDTO } from "../dao/dtos/user.dto.js";
 import { emailTemplate } from "../utils/mailHtml.js";
 
 import config from "../config/config.js";
@@ -18,10 +19,16 @@ class UserService {
 
     async getUsers () {
         try {
-            const users = await userRepository.getUsers();
-            if(!users) return console.log("No users found at service");
+            const user = await userRepository.getUsers();
+            if(!user) return console.log("No users found at service");
 
-            return users;
+              const users = user.map(user =>
+                {
+                  const userDto = new UserDTO(user);
+                  return JSON.parse(JSON.stringify(userDto))
+                })
+             return users; 
+
         } catch (error) {
             throw new Error(error);
         }
@@ -31,44 +38,71 @@ class UserService {
       try {
         const user = await userRepository.getUserById(id)
         if(!user) return console.log("No user found at service");
-        return user;
+        
+        const userDto = new UserDTO(user);
+
+        const users =  JSON.parse(JSON.stringify(userDto))
+
+        return users;
+        
       } catch (error) {
         throw new Error(error);
       }
     }
 
-    async login(email, password){
-        try {
+    async updateConnection (email) {
+      try {
+        const updatedConnection = userRepository.updateUser(
+          { email },
+          { last_connection: new Date() }
+        )
+        if (!updatedConnection) throw new Error('Error updating user\'s last connection')
+  
+        return updatedConnection;
+      } catch (error) {
+        throw error
+      }
+    }
 
-            const user = await userRepository.getUserByEmail(email);
-            if(!user) return console.log("No user found at service");
-            const validPassword = isValidPassword(user,password);
-            if(!validPassword) return console.log("Invalid password / credentials")
-            else {
-                delete user.password;
-                return user;
-            };
+    loginUser (user) {
+      try {
+        const userDTO = new UserDTO(user)
+        const jwtUser = JSON.parse(JSON.stringify(userDTO))
+  
+        const token = jwt.sign(jwtUser, JWT_SECRET, {
+          expiresIn: expireTime
+        })
+        if (!token) throw new Error('Auth token signing failed')
+  
+        return token
 
-        } catch (error) {
-            throw new Error(error);
-        }
+      } catch (error) {
+        throw error
+      }
     }
 
     async getUsersByEmail (email) {
         try {
-            const users = await userRepository.getUsersByEmail(email);
+          
+            const users = await userRepository.getUserByEmail({email});
             if (!users) return console.log("No users found by email at service/ Already exist");
-        } catch (error) {
+            
+            return users;
+        
+          } catch (error) {
             throw new Error(error);
         }
     }
 
     async register (user){
         try {
+
             const userExist = await userRepository.getUserByEmail(user.email);
+
             if(userExist) return console.log("User already exists");
 
             return await userRepository.createUser(user)
+
         } catch (error) {
             throw new Error(error);
         }
@@ -92,6 +126,57 @@ class UserService {
     } catch (error) {
         throw new Error(error);
     }}
+
+    async deleteUserById (id) {
+      try {
+        const userDEleted = await userRepository.deleteUserById(id);
+        if(!userDEleted) return console.log("User not found or deleted");
+        return userDEleted;
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+
+
+
+    async deteleManyUsers (users) {
+      try {
+        const twoDays = 2 * 24 * 60 * 60 * 1000
+        const currentTime = new Date() 
+        const oneMinute = 1 * 60 * 1000;
+        
+        const inactiveUsers = users.filter((user) => {
+          const lastConnection = new Date(user.last_connection)
+          const timeDiff = currentTime - lastConnection
+          return timeDiff > oneMinute
+        })
+
+        if (inactiveUsers.length === 0) throw new Error('No inactive users were found')
+
+        const inactiveUserIds = inactiveUsers.map((user) => user.cart)
+
+        await cartsRepository.deleteCart(inactiveUserIds);
+
+        const deletedUsers = await userRepository.deleteManyUsers(inactiveUserIds)
+
+        inactiveUsers.forEach(async (user) => {
+          const sentEmail = await transport.sendMail({
+            from: `${EMAIL_USER}`,
+            to: user.email,
+            subject: `You have been deleted ${user.name}!`,
+            attachments: [],
+        });
+        return sentEmail;
+      })
+
+        if (!deletedUsers) throw new Error(`Error deleting user `)
+
+        return deletedUsers
+      
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
 
     async recoverPassword(email) {
         try {

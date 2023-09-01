@@ -8,6 +8,8 @@ import {
   ParamsMesage,
 } from "../errors/error.enum.js";
 
+import jwt from "jsonwebtoken"
+
 import { createFakerProducts } from "../mocks/products.mock.js";
 
 export const getProducts = async (req, res) => {
@@ -63,48 +65,48 @@ export const getProducts = async (req, res) => {
 
 export const addProduct = async (req, res) => {
   try {
-    const product = {
-      title: req.body.title,
-      description: req.body.description,
-      price: req.body.price,
-      status: req.body.status,
-      code: req.body.code,
-      stock: req.body.stock,
-      category: req.body.category,
-    };
+    const {
+      title,
+      description ,
+      price ,
+      code,
+      stock,
+      category
+    } = req.body;
 
-    if (
-      !product.title ||
-      !product.description ||
-      !product.price ||
-      !product.status ||
-      !product.code ||
-      !product.stock ||
-      !product.category
-    ) {
-      console.log("Invalid product");
-    }
+    if (!title ||
+      !description ||
+      !price ||
+      !code ||
+      !stock ||
+      !category
+      ) {
+        console.log("Invalid product");
+      }
 
-    const products = await productService.consultProducts()
-/*          console.log({products});
- */    const productIndex = products.findIndex((prod) => prod.code === product.code);
+      const { jwtCookie:token } = req.cookies;
+
+      console.log(token);
+      
+      if (!token) {
+        return res.status(400).send({
+          status: 'error',
+          error: 'Failed to get token'
+        })
+      }  
+
+    const addProduct = await productService.addProduct(title,
+      description ,
+      price ,
+      code,
+      stock,
+      category);
     
-        if (productIndex !== -1) {
-            return res.status(400).send({
-            status: "error",
-            message: { error: `Product with code ${product.code} already exists` },
-            });
-        }
-
-    const addProduct = await productService.addProduct(product);
-
-
     return res
       .status(201)
       .send({status: "Success",payload: addProduct});
 
   } catch (error) {
-
     return res
       .status(404)
       .send({ status: "error", error: "Product not created or added" });
@@ -186,6 +188,15 @@ export const deleteProduct = async (req, res) => {
       return res.status(404).send({ status: "error", error: "invalid values" });
     }
 
+    const { jwtCookie: token } = req.cookies
+
+    if (!token) {
+      return res.status(400).send({
+        status: 'error',
+        error: 'Failed to get token'
+      })
+    }
+
     const deletedProduct = await productService.deleteProduct(pid);
 
     if (!deletedProduct) {
@@ -202,6 +213,18 @@ export const deleteProduct = async (req, res) => {
       .send({ status: "error", error: "Product not updated" });
   }
 };
+
+export const deleteManyProducts = async (req, res) => {
+  try {
+    
+    const product = await productService.deleteManyProducts()
+
+    return res.status(200).send({ status: "success", payload: product });
+
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export function mockingProducts(req, res) {
   try {

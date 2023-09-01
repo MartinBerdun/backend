@@ -5,7 +5,7 @@ class UserRepository {
 
     getUsers = async ()=>{
         try {
-            const users = await userModel.find();
+            const users = await userModel.find().lean();
             return users;
         } catch (error) {
             throw new Error(error);
@@ -20,7 +20,6 @@ class UserRepository {
             throw new Error(error);
         }
     }
-
     
     getUserByEmail = async (email)=>{
         try {
@@ -57,6 +56,25 @@ class UserRepository {
           console.log(error);
         }
       };
+
+    deleteUserById = async (id) => {
+        try {
+            const userDEleted = await userModel.deleteOne(id);
+            return userDEleted;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    deleteManyUsers = async (users) => {
+        try {
+            const deleteUsers = await userModel.deleteMany({ cart: { $in: users } });
+            return deleteUsers;
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 
 }

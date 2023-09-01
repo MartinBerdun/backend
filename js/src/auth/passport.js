@@ -6,8 +6,11 @@ import GitHubStrategy from "passport-github2"
 import config from "../config/config.js";
 import cartModel  from "../dao/models/carts.model.js";
 import jwt from "passport-jwt"
+import { userService } from "../servicies/users.services.js";
 import cookieParser from "cookie-parser";
 import { userRepository } from "../dao/repositories/users.repository.js";
+import { cartService } from "../servicies/carts.services.js";
+
 
 const {clientID , clientSecret , callbackURL, JWT_SECRET, ADMIN_EMAIL, COOKIE_NAME} = config
 
@@ -26,7 +29,7 @@ const cookieExtractor = (req) => {
 const jwtOptions = {
     secretOrKey: JWT_SECRET,
     jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]), //de donde esperamos que llegue nuestro jwt.. en este caso desde una cookie con la funcion cookieExtractor.. que lo que hace es verificar en el objeto req si viene con una cookie.. agarre la que se llame jwtcookie y extraiga el token
-}
+} 
 
 const initializePassport = () => {
     passport.use(
@@ -37,8 +40,6 @@ const initializePassport = () => {
                 let {role} = req.body;
 
                 let user = await userModel.findOne({email:username});
-            
-                console.log({user});
                 
                 if (user) {
                     console.log("user already exists");
@@ -46,7 +47,6 @@ const initializePassport = () => {
                 }
 
                 const cart = await cartModel.create({})
-                console.log(cart);
 
                 const newUser = {
                     first_name,
@@ -61,16 +61,15 @@ const initializePassport = () => {
 
                     cart: cart._id,
                 }
-                const result = await userModel.create(newUser);
 
-                console.log({result});
+                const result = await userModel.create(newUser);
 
                 if(!result) console.log("user not created");
 
                 return done(null, result);
 
             } catch (error) {
-                throw new Error (error);                
+                throw new Error (error);
             }
         })
         );
@@ -85,29 +84,40 @@ const initializePassport = () => {
         }
     })
     );
-    //sigue en sessions.router
 
-    passport.use( "githubLogin" ,
+    passport.use( "github",
         new GitHubStrategy({clientID, clientSecret, callbackURL}, 
         async (accessToken, refreshToken, profile, done)=>{
-            try {
-                console.log(profile);
+        try {
 
-                let user = await userModel.findOne({email: profile._json.email})
-                
-                if (!user){
-                    let newUser = {
-                        first_name: profile._json.name,
-                        last_name: "",
-                        email: profile._json.email,
-                        age: 18,
-                        password: "",
-                    }
-                    let result = await userModel.create(newUser)
-                    return done(null, result);
-                }
+            const user = await userRepository.getUserByEmail({ email: profile._json.email })
 
-                return done(null,user);
+          if (!user) {
+
+            const cart = await cartService.createCart()
+
+            let role
+
+            const newUser = {
+              first_name: profile._json.name,
+              last_name: '',
+              age: 18,
+              email: profile._json.email,
+              password: '',
+              role:
+                profile._json.email === `${ADMIN_EMAIL}`
+                  ? (role = 'admin')
+                  : (role = 'user'),
+              cart: cart._id
+            }
+
+            const result = await userService.register(newUser)
+
+            return done(null, result)
+          }
+
+          return done(null, user)
+
             } catch (error) {
                 return done(error)
             }
@@ -122,7 +132,7 @@ const initializePassport = () => {
     passport.deserializeUser(async (id, done) => {
         let user = await userModel.findById(id);
         done(null, user);
-    });
+    }); 
 
 }
 

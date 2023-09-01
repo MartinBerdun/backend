@@ -1,17 +1,21 @@
 const addToCartForms = document.querySelectorAll('[id^="addToCart-"]');
 const logoutBtn = document.getElementById("logoutButton");
+const addButton = document.getElementsByClassName("botonAgregar")
+const goToCart = document.getElementById("goToCart");
 
 addToCartForms.forEach((form) => {
-    form.addEventListener("submit", (e) => {
+    addEventListener("submit", (e) => {
         e.preventDefault();
 
         const productId = form.getAttribute("id").split("-")[1];
+        const cartId = document.querySelector('#userCartId').textContent
+        console.log(cartId);
 
         const quantity = {
             "quantity":1,
         }
         
-        fetch(`/api/carts/6493976328d77677debf3746/product/${productId}`, {
+        fetch(`/api/carts/${cartId}/product/${productId}`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -31,6 +35,7 @@ addToCartForms.forEach((form) => {
             .catch((error) => console.log(error));
         });
 });
+
 
 logoutBtn.addEventListener("click", () => {
     fetch(`/api/users/logout`, {
@@ -58,3 +63,9 @@ logoutBtn.addEventListener("click", () => {
     .catch((error) => console.log(error));
 });
 
+
+goToCart.addEventListener("click", () => {
+    const cartId = document.querySelector('#userCartId').textContent
+
+    window.location.href = `/cart/${cartId}`
+});

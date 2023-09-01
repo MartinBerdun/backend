@@ -87,3 +87,19 @@ error: Failed to change role: Error: You're missing the following documentantion
 error: Failed to change role: Error: You're missing the following documentantion to upgrade your role: statement
 error: Failed to change role: Error: You're missing the following documentantion to upgrade your role: address
 error: Failed to change role: Error: You're missing the following documentantion to upgrade your role: address
+error: Failed to delete users: Error: TypeError: userRepository.deleteInactiveUsers is not a function
+error: Failed to delete users: Error: ReferenceError: uid is not defined
+error: Failed to delete users: Error: Error: Error deleting user 
+error: Failed to delete users: Error: Error: Error deleting user 
+error: Failed to delete users: Error: Error: Error deleting user 
+error: Failed to delete users: Error: TypeError: users.filter is not a function
+error: Failed to delete users: Error: Error: Error deleting user 
+error: Failed to delete users: Error: Error: No inactive users were found
+error: Failed to delete users: Error: Error: Error deleting user 
+error: Failed to delete users: Error: Error: No inactive users were found
+error: Failed to delete users: Error: Error: No inactive users were found
+error: Failed to delete users: Error: Error: No inactive users were found
+error: Failed to delete users: Error: Error: No inactive users were found
+error: Failed to delete users: Error: Error: No inactive users were found
+error: Failed to login with error: ReferenceError: isValidPassword is not defined
+error: Failed to login with error: ReferenceError: COOKIE_NAME is not defined

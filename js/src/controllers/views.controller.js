@@ -1,6 +1,7 @@
 import { productService } from "../servicies/products.services.js";
 import { cartService } from "../servicies/carts.services.js";
 import { ticketService } from "../servicies/ticket.services.js";
+import { userService } from "../servicies/users.services.js";
 
 
 export const loginView = (req, res) => {
@@ -13,11 +14,19 @@ export const RegisterView = (req, res) => {
     res.render("register",)
 }
 
-export const profileView = (req, res) => {
-    res.render("profile", {
-    user: req.user,
-    });
-};
+export const profileView = async (req, res) => {
+    try {
+        const { email } = req.user
+        const user = await userService.getUsersByEmail(email)
+        console.log({user});
+        res.render('profile', {
+          userId: user._id,
+          user: req.user,
+        })
+      }catch(error){
+        console.log(error)
+      }
+}
 
 export const homeView = async (req, res) => {
     try {
@@ -53,6 +62,7 @@ export const productView = async (req, res) => {
         const  {pid}  = req.params;
     const product = await productService.getProductById(pid);
     res.render("product", {
+        user : req.user,
         product,
         style: "product.css",
         title: "Product Detail",
@@ -84,8 +94,15 @@ export const cartView = async (req, res) => {
 
 export const ticketView = async (req, res) => {
     try {
-        const tickets = await ticketService.getTickets();
+
+        const { email } = req.user
+        const tickets = await ticketService.getTicketsByEmail(email);
+        tickets.forEach((ticket) => {
+            const date = new Date(ticket.purchase_datetime).toLocaleString()
+            ticket.purchase_datetime = date
+          })
         res.render('ticket', {
+            user: req.user,
             tickets,
             style: "ticket.css",
             title: "Tickets",
@@ -120,3 +137,28 @@ export const newPasswordView = (req, res) => {
         .send({ status: "error", error: "Failed to render restore password view" });
     }
 }
+
+
+export const adminView = async (req, res) => {
+    try {
+      const users = await userService.getUsers()
+  
+      const existingUsers = users.map((user) => {
+        
+        const parsedDate = new Date(user.last_connection)
+        const parsedUser = { ...user }
+        parsedUser.last_connection = parsedDate.toLocaleString()
+        return parsedUser
+      })
+  
+      res.render('admin', {
+        existingUsers,
+        title: 'UsersAdministration '
+      })
+    } catch (error) {
+      req.logger.error(`Failed to render admin view: ${error}`)
+      res
+        .status(500)
+        .send({ status: 'error', error: 'Failed to render admin view' })
+    }
+  }
