@@ -1,4 +1,5 @@
-import { productRepository } from "../dao/repositories/products.repository.js";
+import { productRepository } from "../repositories/index.js";
+
 import config from "../config/config.js";
 
 import jwt  from "jsonwebtoken";
@@ -7,11 +8,8 @@ const {JWT_SECRET, EMAIL_USER}= config;
 
 import { transport } from "../transport.js";
 
-class ProductService {
+export default class ProductService {
     constructor() {}
-
-    //VER PARTE DE LA CLASE A LOS 58 MINUTOS DONDE DICE QUE LAS VALIDACIONES DE LOS IF VAN SOLAMENTE EN EL CONTROLLER Y NO EN EL SERVICE 
-
 
     async getProducts (limit, page, category, status, sort) {
         try {
@@ -56,7 +54,7 @@ class ProductService {
 
             const { role, email } = jwt.verify(token, JWT_SECRET, {
                 ignoreExpiration: true,
-              });
+              }); 
         
             role === "premium" ? (product.owner = email) : null; 
             
@@ -103,7 +101,7 @@ class ProductService {
                 ignoreExpiration: true,
               });
 
-              const { owner } = await productRepository.getProductById(id);
+              const { owner, title  } = await productRepository.getProductById(id);
               
               if (role === "premium" && email !== owner) {
                 throw new Error("You can only delete products you own");
@@ -117,8 +115,8 @@ class ProductService {
 
             const sentEmail = await transport.sendMail({
                 from: `${EMAIL_USER}`,
-                to: user.email,
-                subject: `You have been deleted ${user.name}!`,
+                to: owner,
+                subject: `You have deleted this product ${title}!`,
                 attachments: [],
             });
             return sentEmail;
@@ -144,5 +142,3 @@ class ProductService {
         }
     }
 }
-
-export const productService = new ProductService();

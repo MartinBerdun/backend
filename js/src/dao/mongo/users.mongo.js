@@ -1,6 +1,6 @@
-import userModel from "../models/user.model.js";
+import userModel from "./models/user.model.js";
 
-class UserRepository {
+class User {
 
 
     getUsers = async ()=>{
@@ -79,4 +79,4 @@ class UserRepository {
 
 }
 
-export const userRepository = new UserRepository();
+export const user = new User();

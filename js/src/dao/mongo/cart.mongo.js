@@ -1,6 +1,6 @@
-import cartModel from "../models/carts.model.js";
+import cartModel from "./models/carts.model.js";
 
-class CartsRepository {
+class Cart{
     constructor(){
     }
 
@@ -130,4 +130,4 @@ class CartsRepository {
 
 }
 
-export const cartsRepository = new CartsRepository();
+export const cart = new Cart();

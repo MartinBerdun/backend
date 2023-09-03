@@ -1,9 +1,9 @@
-import { ticketRepository } from "../dao/repositories/ticket.repository.js";
-import { cartsRepository } from "../dao/repositories/carts.repository.js";
+import { ticketRepository } from "../repositories/index.js";
+import { cartRepository } from "../repositories/index.js";
+import { productRepository } from "../repositories/index.js";
+import { userRepository } from "../repositories/index.js";
 
-import { productRepository } from "../dao/repositories/products.repository.js";
-
-import { userRepository } from "../dao/repositories/users.repository.js";
+import { emailTemplate } from "../utils/mailHtml.js";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -15,7 +15,7 @@ const { EMAIL_USER } = config;
 
 
 
-class TicketService {
+export default class TicketService {
     constructor(){
     }
 
@@ -61,7 +61,7 @@ async createTicket(cid) {
         try {
             const user = await userRepository.getUserByCartId(cid);
             if(!user) throw new Error (`User with cart ID ${cid} does not exist`);
-            const cart = await cartsRepository.getCartById(cid);
+            const cart = await cartRepository.getCartById(cid);
             if (!cart) throw new Error(`Cart with id: ${cid} does not exist`);
     
             const products = [];
@@ -71,7 +71,7 @@ async createTicket(cid) {
             ({ product: { _id: pid, stock, price, title }, quantity: qty }) => {
                 if (qty > stock) {
                 const deletedProductFromCart =
-                    cartsRepository.deleteProductFromCart(cid, pid);
+                    cartRepository.deleteProductFromCart(cid, pid);
                 if (!deletedProductFromCart)
                     throw new Error(`Error deleting product ${pid} from cart ${cid}`);
                 console.warn(`Product ${title} is out of stock. Removed from cart`);
@@ -83,7 +83,7 @@ async createTicket(cid) {
                 });
     
                 const deletedProductFromCart =
-                    cartsRepository.deleteProductFromCart(cid, pid);
+                    cartRepository.deleteProductFromCart(cid, pid);
                 if (!deletedProductFromCart)
                     throw new Error(`Error deleting product ${pid} from cart ${cid}`);
     
@@ -116,7 +116,18 @@ async createTicket(cid) {
             const newTicket = await ticketRepository.createTicket(ticket);
 
             if (!newTicket) throw new Error("Error creating new ticket");
-    
+
+            const sentEmail = await transport.sendMail({
+                from: `${EMAIL_USER}`,
+                to: purchaser,
+                subject: "Ticket created successfully",
+                html: emailTemplate.newTicketEmail(purchaser,code, purchase_datetime, ammount),
+                text: "Testin email sent",
+                attachments: [],
+            });
+        
+            if (!sentEmail) throw new Error(`Email send failure`);
+            
             return newTicket;
 
         } catch (error) {
@@ -151,4 +162,3 @@ async createTicket(cid) {
 
 
 
-export const ticketService = new TicketService();

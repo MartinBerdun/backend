@@ -1,4 +1,4 @@
-import { productService } from "../servicies/products.services.js";
+import { productService } from "../servicies/index.js";
 
 import CustomError from "../errors/CustomError.js";
 import {
@@ -21,29 +21,29 @@ export const getProducts = async (req, res) => {
       status = null,
       sort = null,
     } = req.query;
-
-    const products = await productService.getProducts(
-      limit,
-      page,
-      category,
-      status,
-      sort
-    );
-
+    
+    
     if (isNaN(limit)) {
       return res.status(400).send({
         status: "error",
         error: `Limit ${limit} is not valid`,
       });
     }
-
+    
     if (isNaN(page)) {
       return res.status(400).send({
         status: "error",
         error: `Page ${page} is not a valid value`,
       });
     }
-
+    const products = await productService.getProducts(
+    limit,
+    page,
+    category,
+    status,
+    sort
+    );
+    
     if (!products)
       return res.status(404).send({
         status: "error",
@@ -55,7 +55,7 @@ export const getProducts = async (req, res) => {
   } catch (error) {
 
     console.log(`Failed to get products at controller ${error}`);
-    req.logger.error(`Failed to get products at controller ${error}`);
+    /* req.logger.error(`Failed to get products at controller ${error}`); */
 
     return res
       .status(404)
@@ -84,16 +84,16 @@ export const addProduct = async (req, res) => {
         console.log("Invalid product");
       }
 
-      const { jwtCookie:token } = req.cookies;
+       const { jwtCookie:token } = req.cookies;
 
       console.log(token);
       
-      if (!token) {
+       if (!token) {
         return res.status(400).send({
           status: 'error',
           error: 'Failed to get token'
         })
-      }  
+      }   
 
     const addProduct = await productService.addProduct(title,
       description ,
@@ -109,15 +109,15 @@ export const addProduct = async (req, res) => {
   } catch (error) {
     return res
       .status(404)
-      .send({ status: "error", error: "Product not created or added" });
+      .send({ status: "error", error: `Product not added ${error}` });
   }
 };
 
 export const getProductById = async (req, res) => {
   try {
     const { pid } = req.params;
-    req.logger.debug(`Id : ${pid}`);
-
+/*     req.logger.debug(`Id : ${pid}`);
+ */
     if (!pid) {
      /*  throw new CustomError({
         name : ErrorsName.ERROR_NAME,
@@ -197,7 +197,7 @@ export const deleteProduct = async (req, res) => {
       })
     }
 
-    const deletedProduct = await productService.deleteProduct(pid);
+    const deletedProduct = await productService.deleteProduct(pid, token);
 
     if (!deletedProduct) {
       return res
@@ -206,6 +206,7 @@ export const deleteProduct = async (req, res) => {
     }
 
     return res.status(200).send({ status: "success", payload: deletedProduct });
+    
   } catch (error) {
     console.log(`Failed to found product by Id ${error}`);
     return res

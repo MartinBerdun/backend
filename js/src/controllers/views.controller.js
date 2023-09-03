@@ -1,7 +1,7 @@
-import { productService } from "../servicies/products.services.js";
-import { cartService } from "../servicies/carts.services.js";
-import { ticketService } from "../servicies/ticket.services.js";
-import { userService } from "../servicies/users.services.js";
+import { productService } from "../servicies/index.js";
+import { cartService } from "../servicies/index.js";
+import { ticketService } from "../servicies/index.js";
+import { userService } from "../servicies/index.js";
 
 
 export const loginView = (req, res) => {

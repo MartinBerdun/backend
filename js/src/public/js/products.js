@@ -1,10 +1,10 @@
 const addToCartForms = document.querySelectorAll('[id^="addToCart-"]');
 const logoutBtn = document.getElementById("logoutButton");
-const addButton = document.getElementsByClassName("botonAgregar")
+/* const addButton = document.getElementsByClassName("botonAgregar") */
 const goToCart = document.getElementById("goToCart");
 
 addToCartForms.forEach((form) => {
-    addEventListener("submit", (e) => {
+    form.addEventListener("submit", (e) => {
         e.preventDefault();
 
         const productId = form.getAttribute("id").split("-")[1];

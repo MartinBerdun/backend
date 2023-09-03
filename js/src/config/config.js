@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const config = {
+  DB_PORT : process.env.PORT,
   dbUrl: process.env.DB_URL,
   DB_USER: process.env.DB_USER,
   DB_PASSWORD: process.env.DB_PASSWORD,
@@ -13,6 +14,8 @@ const config = {
   JWT_SECRET: process.env.JWT_SECRET,
   ADMIN_CODER: process.env.ADMIN_EMAIL,
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+
+  PERSISTANCE : process.env.PERSISTANCE,
 
   COOKIE_NAME: process.env.COOKIE_NAME,
 

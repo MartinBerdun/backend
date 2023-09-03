@@ -4,9 +4,6 @@
     <li>Your registered email is: {{user.email}}</li>
     <li>Your age is: {{user.age}}</li>
     <li>Your cart is:<span class="hidden" id="userCartId">{{user.cart}}</span></li>
-    
-    
-
 </ul>
 <br>
 <br>
@@ -16,21 +13,17 @@
 <br>
 <br>
 
-
-<button id="logoutButton" >Log out</button>
-
-    
-    
+<button id="logoutButton" >Log out</button>    
     {{#each products}}
     
     <div class="container" id="{{this._id}}">
         
         <div class="card">
-            <form id="addToCart-{{this._id}}">
             {{!-- <img src="" alt=""></img>  --}}
             <h4 id="title">{{this.title}}</h4>  
             <p class="price">${{this.price}}</p> 
             <p>{{this.description}}</p>
+            <form id="addToCart-{{this._id}}">
             <button class="botonAgregar" type="submit">Add to cart </button>
             </form>
             <a href="product/{{this._id}}">

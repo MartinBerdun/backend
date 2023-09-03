@@ -1,6 +1,6 @@
-import { userService } from "../servicies/users.services.js";
-import { cartService } from "../servicies/carts.services.js";
-import { userRepository } from "../dao/repositories/users.repository.js";
+import { userService } from "../servicies/index.js";
+import { cartService } from "../servicies/index.js";
+import { userRepository } from "../repositories/index.js";
 import  jwt  from "jsonwebtoken";
 import config from "../config/config.js";
 import { UserDTO } from "../dao/dtos/user.dto.js";
@@ -75,6 +75,7 @@ export const deleteManyUsers = async (req,res) => {
     return res.status(200).send({status: "success", payload : usersdeleted })
 
   } catch (error) {
+    
     req.logger.error(`Failed to delete users: ${error}`);
       return res.status(500).send({ status: "error", error: `${error}` });
   }

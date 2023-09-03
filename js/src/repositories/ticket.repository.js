@@ -1,12 +1,11 @@
-import { ticketModel } from "../models/ticket.model.js";
-
-
-class TicketRepository {
-    constructor () {}
+export default class TicketRepository {
+    constructor (dao) {
+        this.dao = dao;
+    }
 
     getTickets = async () => {
         try {
-            const tickets = await ticketModel.find().lean();
+            const tickets = await this.dao.getTickets();
             return tickets;
         } catch (error) {
             console.log(error);
@@ -15,7 +14,7 @@ class TicketRepository {
     
     getTicketById = async (ticketId) => {
         try {
-            const ticket = await ticketModel.findById(ticketId).lean();
+            const ticket = await this.dao.getTicketById(ticketId);
             return ticket;
         } catch (error) {
             console.log(error);
@@ -24,7 +23,7 @@ class TicketRepository {
     
     getTicketsByEmail = async (email) => {
         try {
-            const tickets = await ticketModel.find({ purchaser: email }).lean();
+            const tickets = await this.dao.getTicketsByEmail(email);
             return tickets;
         } catch (error) {
             console.log(error);
@@ -33,7 +32,7 @@ class TicketRepository {
     
     createTicket = async (ticket) => {
         try {
-            const newTicket = await ticketModel.create(ticket);
+            const newTicket = await this.dao.createTicket(ticket)
             return newTicket;
         } catch (error) {
             console.log(error);
@@ -43,5 +42,4 @@ class TicketRepository {
 
 
 
-export const ticketRepository = new TicketRepository();
 

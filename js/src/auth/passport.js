@@ -1,16 +1,16 @@
 import passport from "passport";
 import local from "passport-local";
-import userModel from "../dao/models/user.model.js";
+import userModel from "../dao/mongo/models/user.model.js";
 import { createHash,isValidPassword } from "../utils.js";
 import GitHubStrategy from "passport-github2"
 import config from "../config/config.js";
-import cartModel  from "../dao/models/carts.model.js";
+import cartModel from "../dao/mongo/models/carts.model.js";
 import jwt from "passport-jwt"
-import { userService } from "../servicies/users.services.js";
+import { userService } from "../servicies/index.js";
 import cookieParser from "cookie-parser";
-import { userRepository } from "../dao/repositories/users.repository.js";
-import { cartService } from "../servicies/carts.services.js";
 
+import { cartService } from "../servicies/index.js";
+import { userRepository } from "../repositories/index.js";
 
 const {clientID , clientSecret , callbackURL, JWT_SECRET, ADMIN_EMAIL, COOKIE_NAME} = config
 

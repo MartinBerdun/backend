@@ -1,6 +1,6 @@
 // socket del lado del servidor
 
-import { Server } from "socket.io";
+/* import { Server } from "socket.io";
 import ProductManager from "./dao/filesManager/productManager.js";
 const socket = {};
 
@@ -15,4 +15,4 @@ socket.connect = (server) => {
   });
 };
 
-export default socket;
+export default socket; */

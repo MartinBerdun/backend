@@ -1,5 +1,5 @@
-import { cartService } from "../servicies/carts.services.js";
-import { ticketService } from "../servicies/ticket.services.js";
+import { cartService } from "../servicies/index.js";
+import { ticketService } from "../servicies/index.js";
 
 export const getCarts = async (req,res) => {
     try {

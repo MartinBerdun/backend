@@ -10,12 +10,8 @@ removeFromCart.forEach((form) => {
     form.addEventListener('submit', async (e) => {
       e.preventDefault()
 
-      const productId = form.getAttribute('id').split('-')[1]
-      /* const prodTitle = form
-        .closest('.max-w-4xl')
-        .querySelector('h5').textContent */
-
-      console.log({productId});
+      const productId = form.getAttribute('id').split('-')[1];
+      const title = document.getElementById("title").textContent;
   
       try {
         const response = await fetch(
@@ -27,7 +23,7 @@ removeFromCart.forEach((form) => {
         if (response.ok) {
           Swal.fire({
             title: 'Product removed from cart!',
-            text: `You removed ${prodTitle} from the cart`,
+            text: `You removed ${title} from the cart`,
             toast: true,
             position: 'top-right',
             icon: 'success',
@@ -40,7 +36,7 @@ removeFromCart.forEach((form) => {
         } else {
           throw data
         }
-      } catch ({ error }) {
+      } catch (error) {
         Swal.fire({
           title: 'Error!',
           html: `<strong class="text-bold">${error}</strong>`,

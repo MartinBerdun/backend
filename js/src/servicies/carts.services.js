@@ -1,19 +1,19 @@
-import { cartsRepository } from "../dao/repositories/carts.repository.js";
+import { cartRepository } from "../repositories/index.js";
 
-import { productRepository } from "../dao/repositories/products.repository.js";
+import { productRepository } from "../repositories/index.js";
 
 import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 
 const {JWT_SECRET} = config;
 
-class CartService {
+export default class CartService {
     constructor() {}
 
     async getCarts() {
         try {
 
-            const getAllCarts = await cartsRepository.getCarts();
+            const getAllCarts = await cartRepository.getCarts();
             if(!getAllCarts) return console.log("No carts found");
 
             return getAllCarts;
@@ -27,7 +27,7 @@ class CartService {
     async createCart(){
         try {
 
-            const newCart = await cartsRepository.createCart();
+            const newCart = await cartRepository.createCart();
             if(!newCart) return console.log("Cart not created");
 
             return newCart;
@@ -40,7 +40,7 @@ class CartService {
     async getCartById(cid){
         try {
 
-            const cartById = await cartsRepository.getCartById(cid);
+            const cartById = await cartRepository.getCartById(cid);
             
             if(!cartById) return console.log("Cart not found at service");
             
@@ -62,7 +62,7 @@ class CartService {
                 throw new Error("You can't add your own products");
               }
 
-            const product = await cartsRepository.addProduct(cartId, productId, quantity);
+            const product = await cartRepository.addProduct(cartId, productId, quantity);
 
             if (!product) return console.log("Product not added seccessfully");
 
@@ -76,7 +76,7 @@ class CartService {
     async updateCart(cartId, products){
         try {
 
-            const product = await cartsRepository.updateCart(cartId, products);
+            const product = await cartRepository.updateCart(cartId, products);
 
             return product;
 
@@ -88,7 +88,7 @@ class CartService {
     async updateQuantityInCart(cartId, prodId, quantity){
         try {
 
-            const cart = await cartsRepository.updateQuantityInCart(cartId, prodId, quantity);
+            const cart = await cartRepository.updateQuantityInCart(cartId, prodId, quantity);
 
             if (!cart) return console.log("Quantity not updated");
 
@@ -102,7 +102,7 @@ class CartService {
     async deleteProductFromCart( cartId, prodId) {
         try {
 
-            const cart = await cartsRepository.deleteProductFromCart(cartId, prodId);
+            const cart = await cartRepository.deleteProductFromCart(cartId, prodId);
 
             if(!cart) return console.log("Product not deleted from cart");
 
@@ -116,7 +116,7 @@ class CartService {
     async deleteCart (cid) {
         try {
 
-            const cart = await cartsRepository.deleteCart(cid);
+            const cart = await cartRepository.deleteCart(cid);
 
             if (!cart) return console.log("Cart not deleted");
 
@@ -128,5 +128,3 @@ class CartService {
     }
 
 }
-
-export const cartService = new CartService();

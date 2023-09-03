@@ -1,8 +1,7 @@
 import { UserDTO } from "../dao/dtos/user.dto.js";
-import { userRepository } from "../dao/repositories/users.repository.js";
+import { userRepository } from "../repositories/index.js";
 import { isValidPassword, createHash } from "../utils.js";
-import { cartsRepository } from "../dao/repositories/carts.repository.js";
-
+import { cartRepository } from "../repositories/index.js";
 import { emailTemplate } from "../utils/mailHtml.js";
 
 import config from "../config/config.js";
@@ -14,7 +13,7 @@ const {JWT_SECRET, EMAIL_USER}= config;
 import { transport } from "../transport.js";
 
 
-class UserService {
+export default class UserService {
     constructor(){}
 
     async getUsers () {
@@ -155,15 +154,18 @@ class UserService {
 
         const inactiveUserIds = inactiveUsers.map((user) => user.cart)
 
-        await cartsRepository.deleteCart(inactiveUserIds);
+        await cartRepository.deleteCart(inactiveUserIds);
 
         const deletedUsers = await userRepository.deleteManyUsers(inactiveUserIds)
+
+        console.log({deletedUsers});
 
         inactiveUsers.forEach(async (user) => {
           const sentEmail = await transport.sendMail({
             from: `${EMAIL_USER}`,
             to: user.email,
-            subject: `You have been deleted ${user.name}!`,
+            subject: `Account deleted!`,
+            html: emailTemplate.deletedUser(user.name, user.email),
             attachments: [],
         });
         return sentEmail;
@@ -332,5 +334,4 @@ class UserService {
 
 }
 
-export const userService = new UserService();
 

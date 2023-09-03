@@ -4,7 +4,6 @@ import cartRouter from "./routes/cart.router.js";
 import handelbars from "express-handlebars";
 import __dirname from "./utils.js"; 
 import viewsRouter from "./routes/views.router.js";
-import socket from "./socket.js";
 import cookieParser from "cookie-parser";
 import database from "./db.js";
 import userRouter from "./routes/user.router.js";
@@ -14,11 +13,15 @@ import ticketsRouter from "./routes/ticket.router.js";
 
 import { errorMiddleware } from "./middlewares/error.js";
 
-import { addLogger } from "./utils/logger.js";
-import loggerRouter from "./routes/logger.router.js"
+/* import { addLogger } from "./utils/logger.js";
+ */import loggerRouter from "./routes/logger.router.js"
 
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
+
+import config from "./config/config.js";
+
+const {DB_PORT} = config;
 
 const app = express();
 
@@ -33,8 +36,8 @@ initializePassport();
 app.use(passport.initialize());
 // app.use(passport.session());
 
-app.use(addLogger);
-
+/* app.use(addLogger);
+ */
 const swaggerOPtions = {
   definition :{
       openapi : "3.0.1" ,//hace referencia a la version del estandar de la documentacion a usar
@@ -65,10 +68,12 @@ app.engine("handlebars", handelbars.engine()); //crea un motor de plantillas lla
 app.set("views", `${__dirname}/views`); //le dice al servidor donde encuentra las plantillas
 app.set("view engine", "handlebars"); // crea el motor de vistas
 
-const httpServer = app.listen(8080, () => {
+const httpServer = app.listen(DB_PORT, () => {
+  console.log(DB_PORT);
   console.log("Listening on port 8080");
 });
 
 database.connect();
 
-socket.connect(httpServer);
+/* socket.connect(httpServer);
+ */
