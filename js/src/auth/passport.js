@@ -15,7 +15,7 @@ import { userRepository } from "../repositories/index.js";
 const {clientID , clientSecret , callbackURL, JWT_SECRET, ADMIN_EMAIL, COOKIE_NAME} = config
 
 const LocalStrategy = local.Strategy;
-const JwTStrategy = jwt.Strategy;
+const JwtStrategy = jwt.Strategy;
 const ExtractJwt = jwt.ExtractJwt; // jwt tiene una opcion extractjwt para extraer el jwt
 
 const cookieExtractor = (req) => {
@@ -75,8 +75,9 @@ const initializePassport = () => {
         );
 
 
-    passport.use("jwt", 
-    new JwTStrategy(jwtOptions, async (jwt_payload,done) =>{
+    passport.use(
+        'jwt', 
+        new JwtStrategy(jwtOptions, async (jwt_payload,done) =>{
         try {
             return done(null, jwt_payload)
         } catch (error) {
