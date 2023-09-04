@@ -9,9 +9,9 @@ router.get ("/", getProducts);
 
 router.get ("/:pid", getProductById);
 
-router.post ("/",/* (req, res, next) => authRole(req, res, next, ["admin", "premium"]), *//* passport.authenticate("jwt", { session: false }) ,  */ addProduct);
+router.post ("/", (req, res, next) => authRole(req, res, next, ["admin", "premium"]), passport.authenticate("jwt", { session: false }) ,  addProduct);
 
-router.put ("/:pid",/* (req, res, next) => authRole(req, res, next, "admin"), */ updateProduct);
+router.put ("/:pid", (req, res, next) => authRole(req, res, next, "admin"),updateProduct);
 
 router.delete ("/:pid",(req, res, next) => authRole(req, res, next, ["admin", "premium"]),deleteProduct);
 

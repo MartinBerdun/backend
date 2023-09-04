@@ -43,7 +43,7 @@ router.get("/githubcallback",
 
 router.post("/premium/:uid",
     passport.authenticate("jwt", { session: false }),
-    /* (req, res, next) => authRole(req, res, next, ["admin", "user","premium"]), */ 
+    (req, res, next) => authRole(req, res, next, ["admin", "user","premium"]), 
     changeRole
 );
 

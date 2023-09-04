@@ -23,8 +23,8 @@ router.get("/restore", restoreView);
 
 router.get("/resetPassword", newPasswordView);
 
-router.get('/admin',/* (req, res, next) => authRole(req, res, next, ["admin", "user"]), 
-    passport.authenticate('jwt', { session: false }),  */
+router.get('/admin', (req, res, next) => authRole(req, res, next, ["admin", "user"]), 
+    passport.authenticate('jwt', { session: false }), 
     adminView
   )
 
