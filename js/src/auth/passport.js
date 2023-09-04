@@ -27,7 +27,7 @@ const cookieExtractor = (req) => {
 }
 
 const jwtOptions = {
-    secretOrKey: "jwt",
+    secretOrKey: JWT_SECRET,
     jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]), //de donde esperamos que llegue nuestro jwt.. en este caso desde una cookie con la funcion cookieExtractor.. que lo que hace es verificar en el objeto req si viene con una cookie.. agarre la que se llame jwtcookie y extraiga el token
 } 
 
