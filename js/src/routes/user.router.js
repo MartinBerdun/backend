@@ -10,9 +10,9 @@ const router = Router();
 
 router.get("/:id", getUserById);
 
-router.get('/', getUsers);
+router.get('/',(req, res, next) => authRole(req, res, next, "admin") , getUsers);
 
-router.delete('/inactive', deleteManyUsers);
+router.delete('/inactive',passport.authenticate("jwt", { session: false }),(req, res, next) => authRole(req, res, next, "admin") , deleteManyUsers);
 
 router.delete('/:id', deleteUserById);
 

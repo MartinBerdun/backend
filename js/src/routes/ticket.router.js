@@ -9,18 +9,11 @@ import {
 
 const router = Router();
 
-router.get("/",getTickets);
+router.get("/",(req, res, next) => authRole(req, res, next, "admin") ,getTickets);
 
 router.get("/:tid",getTicketById);
 
-router.get("/orders/:email",getTicketsByEmail);
+router.get("/orders/:email",(req, res, next) => authRole(req, res, next, ["user", "premium"]) ,getTicketsByEmail);
 
-router.get("/mail",passport.authenticate("jwt", { session: false }), (req, res)=>{
-    const jwtUser = req.user;
-    console.log({jwtUser});
-
-    const {email} = new UserDTO(jwtUser);
-    console.log({email});
-},sendEmail);
 
 export default router;
