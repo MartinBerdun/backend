@@ -69,7 +69,6 @@ app.set("views", `${__dirname}/views`); //le dice al servidor donde encuentra la
 app.set("view engine", "handlebars"); // crea el motor de vistas
 
 const httpServer = app.listen(DB_PORT, () => {
-  console.log(DB_PORT);
   console.log("Listening on port 8080");
 });
 

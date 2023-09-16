@@ -96,23 +96,15 @@ export default class ProductService {
 
     async deleteProduct(id, token) {
         try {
-
-            const { role, email } = jwt.verify(token, JWT_SECRET, {
-                ignoreExpiration: true,
-              });
-
+            const { role, email } = jwt.verify(token, JWT_SECRET, {ignoreExpiration: true,});
               const { owner, title  } = await productRepository.getProductById(id);
-              
               if (role === "premium" && email !== owner) {
                 throw new Error("You can only delete products you own");
-              }
-
+            }
             const deletedProduct = await productRepository.deleteProduct(id);
-
             if (!deletedProduct) {
                 throw new Error(`Error deleting product with id: ${id}`)
               }
-
             const sentEmail = await transport.sendMail({
                 from: `${EMAIL_USER}`,
                 to: owner,

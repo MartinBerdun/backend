@@ -15,7 +15,7 @@ const authRole = (req, res, next, roleToVerify) => {
     const { role } = jwt.verify(token, JWT_SECRET);
     console.log({role});
   
-    if (role !== roleToVerify) {
+    if (!roleToVerify.includes(role)) {
       
       return res.status(403).send({error: "incorrect permission from authRole"});
     }
